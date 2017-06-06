@@ -3,4 +3,8 @@ Library/
 ProjectSettings/
 SummerPlatformer.csproj
 Summerplatformer.sln
+Summerplatformer.Editor.csproj
 Temp/
+Assets/Rewired
+Assets/*.meta
+RewiredBackup
