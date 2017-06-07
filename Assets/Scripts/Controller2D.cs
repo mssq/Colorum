@@ -2,42 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent (typeof (BoxCollider2D))]
-public class Controller2D : MonoBehaviour {
+public class Controller2D : RaycastController {
 
-    // To determine which things player can collide with
-    public LayerMask collisionMask;
-
-    // This determines how deep inside the player the raycasts will be projected
-    const float skinWidth = .015f;
-
-    // How many rays will be projected
-    public int horizontalRayCount = 4;
-    public int verticalRayCount = 4;
-
-    // Spacing between rays
-    float horizontalRaySpacing;
-    float verticalRaySpacing;
-
-    BoxCollider2D playerCollider;
-    RaycastOrigins raycastOrigins;
     public CollisionInfo collisions;
 
-    void Start() {
-        playerCollider = GetComponent<BoxCollider2D>();
-        CalculateRaySpacing();
+    public override void Start() {
+        // Call the RaycastController start method
+        base.Start();
+
     }
 
-    public void Move(Vector3 velocity) {
+    public void Move(Vector3 velocity, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
 
-        if (velocity.x != 0)
+        if (velocity.x != 0) {
             HorizontalCollisions(ref velocity);
-        if (velocity.y != 0)
+        }
+        if (velocity.y != 0) {
             VerticalCollisions(ref velocity);
+        }
 
         transform.Translate(velocity);
+
+        if (standingOnPlatform) {
+            collisions.below = true;
+        }
     }
 
     void HorizontalCollisions(ref Vector3 velocity) {
@@ -52,6 +42,11 @@ public class Controller2D : MonoBehaviour {
             Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
 
             if (hit) {
+                
+                if (hit.distance == 0) {
+                    continue;
+                }
+
                 velocity.x = (hit.distance - skinWidth) * directionX;
                 rayLength = hit.distance;
 
@@ -80,34 +75,6 @@ public class Controller2D : MonoBehaviour {
                 collisions.above = directionY == 1;
             }
         }
-    }
-
-    void UpdateRaycastOrigins() {
-        Bounds bounds = playerCollider.bounds;
-        bounds.Expand(skinWidth * -2);
-
-        raycastOrigins.bottomLeft = new Vector2(bounds.min.x, bounds.min.y);
-        raycastOrigins.bottomRight = new Vector2(bounds.max.x, bounds.min.y);
-        raycastOrigins.topLeft = new Vector2(bounds.min.x, bounds.max.y);
-        raycastOrigins.topRight = new Vector2(bounds.max.x, bounds.max.y);
-    }
-
-    void CalculateRaySpacing() {
-        Bounds bounds = playerCollider.bounds;
-        bounds.Expand(skinWidth * -2);
-
-        horizontalRayCount = Mathf.Clamp(horizontalRayCount, 2, int.MaxValue);
-        verticalRayCount = Mathf.Clamp(verticalRayCount, 2, int.MaxValue);
-
-        horizontalRaySpacing = bounds.size.y / (horizontalRayCount - 1);
-        verticalRaySpacing = bounds.size.x / (verticalRayCount - 1);
-
-    }
-
-    // Raycast location origins
-    struct RaycastOrigins {
-        public Vector2 topLeft, topRight;
-        public Vector2 bottomLeft, bottomRight;
     }
 
     public struct CollisionInfo {
