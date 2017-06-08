@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlatformController : RaycastController {
 
+    public Controller2D target;
     public LayerMask passengerMask;
 
     public Vector3[] localWaypoints;
@@ -72,7 +73,7 @@ public class PlatformController : RaycastController {
                 passengerDictionary.Add(passenger.transform, passenger.transform.GetComponent<Controller2D>());
             }
             if (passenger.moveBeforePlatform == beforeMovePlatform) {
-                passengerDictionary[passenger.transform].Move(passenger.velocity, passenger.standingOnPlatform);
+                passengerDictionary[passenger.transform].Move(passenger.velocity, target.playerInput, passenger.standingOnPlatform);
             }
         }
     }

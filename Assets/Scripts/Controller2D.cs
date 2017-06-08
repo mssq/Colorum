@@ -5,6 +5,8 @@ using UnityEngine;
 public class Controller2D : RaycastController {
 
     public CollisionInfo collisions;
+    [HideInInspector]
+    public Vector2 playerInput;
 
     public override void Start() {
         // Call the RaycastController start method
@@ -12,9 +14,10 @@ public class Controller2D : RaycastController {
 
     }
 
-    public void Move(Vector3 velocity, bool standingOnPlatform = false) {
+    public void Move(Vector3 velocity, Vector2 input, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
+        playerInput = input;
 
         if (velocity.x != 0) {
             HorizontalCollisions(ref velocity);
