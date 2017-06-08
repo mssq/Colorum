@@ -14,35 +14,35 @@ public class Controller2D : RaycastController {
 
     }
 
-    public void Move(Vector3 velocity, Vector2 input, bool standingOnPlatform = false) {
+    public void Move(Vector2 moveAmount, Vector2 input, bool standingOnPlatform = false) {
         UpdateRaycastOrigins();
         collisions.Reset();
         playerInput = input;
 
-        if (velocity.x != 0) {
-            HorizontalCollisions(ref velocity);
+        if (moveAmount.x != 0) {
+            HorizontalCollisions(ref moveAmount);
         }
-        if (velocity.y != 0) {
-            VerticalCollisions(ref velocity);
+        if (moveAmount.y != 0) {
+            VerticalCollisions(ref moveAmount);
         }
 
-        transform.Translate(velocity);
+        transform.Translate(moveAmount);
 
         if (standingOnPlatform) {
             collisions.below = true;
         }
     }
 
-    void HorizontalCollisions(ref Vector3 velocity) {
-        float directionX = Mathf.Sign(velocity.x);
-        float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+    void HorizontalCollisions(ref Vector2 moveAmount) {
+        float directionX = Mathf.Sign(moveAmount.x);
+        float rayLength = Mathf.Abs(moveAmount.x) + skinWidth;
 
         for (int i = 0; i < horizontalRayCount; i++) {
             Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
             rayOrigin += Vector2.up * (horizontalRaySpacing * i);
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, collisionMask);
             // Draw the raycasts
-            Debug.DrawRay(rayOrigin, Vector2.right * directionX * rayLength, Color.red);
+            Debug.DrawRay(rayOrigin, Vector2.right * directionX, Color.red);
 
             if (hit) {
                 
@@ -50,7 +50,7 @@ public class Controller2D : RaycastController {
                     continue;
                 }
 
-                velocity.x = (hit.distance - skinWidth) * directionX;
+                moveAmount.x = (hit.distance - skinWidth) * directionX;
                 rayLength = hit.distance;
 
                 collisions.left = directionX == -1;
@@ -59,19 +59,19 @@ public class Controller2D : RaycastController {
         }
     }
 
-    void VerticalCollisions(ref Vector3 velocity) {
-        float directionY = Mathf.Sign(velocity.y);
-        float rayLength = Mathf.Abs(velocity.y) + skinWidth;
+    void VerticalCollisions(ref Vector2 moveAmount) {
+        float directionY = Mathf.Sign(moveAmount.y);
+        float rayLength = Mathf.Abs(moveAmount.y) + skinWidth;
 
         for (int i = 0; i < verticalRayCount; i++) {
             Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
-            rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
+            rayOrigin += Vector2.right * (verticalRaySpacing * i + moveAmount.x);
             RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
             // Draw the raycasts
-            Debug.DrawRay(rayOrigin, Vector2.up * directionY * rayLength, Color.red);
+            Debug.DrawRay(rayOrigin, Vector2.up * directionY, Color.red);
 
             if (hit) {
-                velocity.y = (hit.distance - skinWidth) * directionY;
+                moveAmount.y = (hit.distance - skinWidth) * directionY;
                 rayLength = hit.distance;
 
                 collisions.below = directionY == -1;
