@@ -9,7 +9,7 @@ public class PlayerInput : MonoBehaviour {
     Player player;
 
     public int playerId; // The Rewired player id of this character
-    public Object playerTwo;
+    public GameObject lever;
     private Rewired.Player rewPlayer; // The Rewired Player
 
     void Start () {
@@ -23,11 +23,16 @@ public class PlayerInput : MonoBehaviour {
 
 	void Update () {
 
-       Vector2 directionalInput = new Vector2(rewPlayer.GetAxisRaw("Move Horizontal"), 0);
-       player.SetDirectionalInput(directionalInput);
+        Vector2 directionalInput = new Vector2(rewPlayer.GetAxisRaw("Move Horizontal P" + (playerId + 1)), 0);
+        player.SetDirectionalInput(directionalInput);
 
-       if (rewPlayer.GetButtonDown("Gravity")) {
+        if (rewPlayer.GetButtonDown("Gravity")) {
             player.onGravityInput();
-       }
+        }
+
+        /* ROTATION STUFF
+        float angle = Mathf.Atan2(rewPlayer.GetAxis("Move Horizontal P2"), rewPlayer.GetAxis("Move Vertical P2")) * Mathf.Rad2Deg;
+        lever.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+        print("ANGLE: " + angle); */
     }
 }
