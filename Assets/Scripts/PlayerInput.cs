@@ -6,19 +6,22 @@ using Rewired;
 [RequireComponent (typeof (Player))]
 public class PlayerInput : MonoBehaviour {
 
-    Player player;
+    private Player player;
+    private Rewired.Player rewPlayer; // The Rewired Player
+    private float origMoveSpeed;
 
     public int playerId; // The Rewired player id of this character
-    public GameObject lever;
-    private Rewired.Player rewPlayer; // The Rewired Player
+    public Lever[] levers;
 
-    void Start () {
-        // Get the Rewired Player object for this player and keep it for the duration of the character's lifetime
+    private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(playerId);
         player = GetComponent<Player>();
+    }
 
+    void Start () {
         Rewired.Controller j = ReInput.controllers.GetController(ControllerType.Joystick, 0);
         rewPlayer.controllers.AddController(j, false);
+        origMoveSpeed = player.moveSpeed;
     }
 
 	void Update () {
@@ -30,9 +33,25 @@ public class PlayerInput : MonoBehaviour {
             player.onGravityInput();
         }
 
-        /* ROTATION STUFF
-        float angle = Mathf.Atan2(rewPlayer.GetAxis("Move Horizontal P2"), rewPlayer.GetAxis("Move Vertical P2")) * Mathf.Rad2Deg;
-        lever.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
-        print("ANGLE: " + angle); */
+        if (rewPlayer.GetButton("Pull Lever")) {
+            for (int i = 0; i < levers.Length; i++) {
+                if (levers[i].leverActivated) {
+                    levers[i].PullLever();
+                }
+            }
+            
+        }
+
+        if (rewPlayer.GetButtonUp("Pull Lever")) {
+            player.moveSpeed = origMoveSpeed;
+        }
+    }
+
+    public float getP2AxisHorizontal() {
+        return rewPlayer.GetAxis("Move Horizontal P2");
+    }
+
+    public float getP2AxisVertical() {
+        return rewPlayer.GetAxis("Move Vertical P2");
     }
 }
