@@ -6,7 +6,7 @@ using Rewired;
 public class Lever : MonoBehaviour {
 
     private GameObject playerTwo;
-    private float angleLimit = 85;
+    private float angleLimit = 81;
     private PlayerTwoInput pInput;
 
     public Player PlayerOneScript;
@@ -34,16 +34,20 @@ public class Lever : MonoBehaviour {
         if (leverActivated) {
             playerTwoScript.moveSpeed = 0;
             float angle = Mathf.Atan2(pInput.getAxisHorizontal(), pInput.getAxisVertical()) * Mathf.Rad2Deg;
+            int roundedAngle = (int) (angle / 10) * 10;
 
             if (angle > angleLimit) {
                 this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -angleLimit));
             } else if (angle < -angleLimit) {
                 this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, angleLimit));
             } else {
-                this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
+                this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -roundedAngle));
             }
 
-            PlayerOneScript.gravity = Mathf.Round(angle);
+            if (roundedAngle < angleLimit && roundedAngle > -angleLimit) {
+                PlayerOneScript.gravity = Mathf.Round(roundedAngle);
+            }
+
             playerTwo.transform.position = new Vector2(this.transform.position.x, playerTwo.transform.position.y);
         }
     }

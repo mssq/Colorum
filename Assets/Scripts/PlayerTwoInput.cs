@@ -15,6 +15,7 @@ public class PlayerTwoInput : MonoBehaviour {
     public int playerId; // The Rewired player id of this character
     public Lever[] levers;
     public Text leverOneText;
+    public Text leverTwoText;
 
     private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(playerId);
@@ -26,7 +27,8 @@ public class PlayerTwoInput : MonoBehaviour {
         Rewired.Controller j = ReInput.controllers.GetController(ControllerType.Joystick, 0);
         rewPlayer.controllers.AddController(j, false);
         origMoveSpeed = player.moveSpeed;
-        leverOneText.text = player.gravity.ToString(); // Set the text to be the beginning value of gravity
+        leverOneText.text = player.gravity.ToString();
+        leverTwoText.text = player.gravity.ToString();
     }
 
     void Update() {
@@ -38,7 +40,12 @@ public class PlayerTwoInput : MonoBehaviour {
             for (int i = 0; i < levers.Length; i++) {
                 if (levers[i].leverActivated) {
                     levers[i].PullLever();
-                    leverOneText.text = Mathf.Round(playerOne.gravity).ToString();
+                    if (i == 0) {
+                        leverOneText.text = Mathf.Round(playerOne.gravity).ToString();
+                    } else if (i == 1) {
+                        leverTwoText.text = Mathf.Round(playerOne.gravity).ToString();
+                    }
+                    
                 }
             }
 
