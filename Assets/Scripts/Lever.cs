@@ -7,13 +7,15 @@ public class Lever : MonoBehaviour {
 
     private GameObject playerTwo;
     private float angleLimit = 85;
+    private PlayerTwoInput pInput;
 
-    public Player player;
-    public PlayerInput pInput;
+    public Player PlayerOneScript;
+    public Player playerTwoScript;
     public bool leverActivated = false;
 
     private void Awake() {
         playerTwo = GameObject.FindGameObjectWithTag("Player Two");
+        pInput = playerTwo.GetComponent<PlayerTwoInput>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -30,8 +32,8 @@ public class Lever : MonoBehaviour {
 
     public void PullLever() {
         if (leverActivated) {
-            player.moveSpeed = 0;
-            float angle = Mathf.Atan2(pInput.getP2AxisHorizontal(), pInput.getP2AxisVertical()) * Mathf.Rad2Deg;
+            playerTwoScript.moveSpeed = 0;
+            float angle = Mathf.Atan2(pInput.getAxisHorizontal(), pInput.getAxisVertical()) * Mathf.Rad2Deg;
 
             if (angle > angleLimit) {
                 this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -angleLimit));
@@ -41,6 +43,7 @@ public class Lever : MonoBehaviour {
                 this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -angle));
             }
 
+            PlayerOneScript.gravity = Mathf.Round(angle);
             playerTwo.transform.position = new Vector2(this.transform.position.x, playerTwo.transform.position.y);
         }
     }

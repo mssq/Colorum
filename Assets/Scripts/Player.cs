@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour {
     }
 	
 	void Update () {
-        calculateVelocity();
+        CalculateVelocity();
 
         controller.Move(velocity * Time.deltaTime, directionalInput);
 
@@ -42,7 +43,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void calculateVelocity() {
+    void CalculateVelocity() {
         float targetVelocityX = directionalInput.x * moveSpeed;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing,
             (controller.collisions.below || controller.collisions.above) ? accelerationTimeGrounded : accelerationTimeAirborne);
