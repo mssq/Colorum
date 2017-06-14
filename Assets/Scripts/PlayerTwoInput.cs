@@ -40,8 +40,16 @@ public class PlayerTwoInput : MonoBehaviour {
             for (int i = 0; i < levers.Length; i++) {
                 if (levers[i].leverActivated) {
                     levers[i].PullLever();
+                    // Lever one
                     if (i == 0) {
-                        leverOneText.text = Mathf.Round(playerOne.gravity).ToString();
+                        if (playerOne.gravity == 5 || playerOne.gravity == -5) {
+                            leverOneText.text = "LOW";
+                        } else if (playerOne.gravity == 20 || playerOne.gravity == -20) {
+                            leverOneText.text = "MED";
+                        } else if (playerOne.gravity == 40 || playerOne.gravity == -40) {
+                            leverOneText.text = "HIGH";
+                        }
+                    // Lever two
                     } else if (i == 1) {
                         leverTwoText.text = Mathf.Round(playerOne.gravity).ToString();
                     }
