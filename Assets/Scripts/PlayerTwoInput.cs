@@ -9,26 +9,25 @@ public class PlayerTwoInput : MonoBehaviour {
 
     private Player player;
     private Player playerOne;
+    private GameObject playerGO;
     private Rewired.Player rewPlayer; // The Rewired Player
     private float origMoveSpeed;
 
     public int playerId; // The Rewired player id of this character
     public Lever[] levers;
     public Text leverOneText;
-    public Text leverTwoText;
 
     private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(playerId);
         player = GetComponent<Player>();
-        playerOne = GameObject.FindGameObjectWithTag("Player One").GetComponent<Player>();
+        playerGO = GameObject.FindGameObjectWithTag("Player One");
+        playerOne = playerGO.GetComponent<Player>();
     }
 
     void Start() {
         Rewired.Controller j = ReInput.controllers.GetController(ControllerType.Joystick, 0);
         rewPlayer.controllers.AddController(j, false);
         origMoveSpeed = player.moveSpeed;
-        leverOneText.text = player.gravity.ToString();
-        leverTwoText.text = player.gravity.ToString();
     }
 
     void Update() {
@@ -39,9 +38,10 @@ public class PlayerTwoInput : MonoBehaviour {
         if (rewPlayer.GetButton("Pull Lever")) {
             for (int i = 0; i < levers.Length; i++) {
                 if (levers[i].leverActivated) {
-                    levers[i].PullLever();
+                    
                     // Lever one
                     if (i == 0) {
+                        levers[i].PullLever();
                         if (playerOne.gravity == 5 || playerOne.gravity == -5) {
                             leverOneText.text = "LOW";
                         } else if (playerOne.gravity == 20 || playerOne.gravity == -20) {
@@ -51,7 +51,7 @@ public class PlayerTwoInput : MonoBehaviour {
                         }
                     // Lever two
                     } else if (i == 1) {
-                        leverTwoText.text = Mathf.Round(playerOne.gravity).ToString();
+                        levers[i].JoystickLever();
                     }
                     
                 }
