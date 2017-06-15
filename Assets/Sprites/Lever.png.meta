@@ -1,14 +1,12 @@
 fileFormatVersion: 2
-guid: 2fd9ac4a26df32040a45433f48a9009e
-timeCreated: 1497514758
+guid: f396066ab0a14ea48a784c9c093a1d49
+timeCreated: 1497541615
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: JoystickLever_0
-    21300002: JoystickLever_1
-    21300004: JoystickLever_2
-    21300006: JoystickLever_3
-    21300008: JoystickLever_4
+    21300000: Lever_0
+    21300002: Lever_1
+    21300004: Lever_2
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -83,7 +81,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: JoystickLever_0
+      name: Lever_0
       rect:
         serializedVersion: 2
         x: 0
@@ -96,7 +94,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: JoystickLever_1
+      name: Lever_1
       rect:
         serializedVersion: 2
         x: 32
@@ -109,36 +107,10 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: JoystickLever_2
+      name: Lever_2
       rect:
         serializedVersion: 2
         x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: JoystickLever_3
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      tessellationDetail: 0
-    - serializedVersion: 2
-      name: JoystickLever_4
-      rect:
-        serializedVersion: 2
-        x: 128
         y: 0
         width: 32
         height: 32

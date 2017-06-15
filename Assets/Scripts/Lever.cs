@@ -18,10 +18,7 @@ public class Lever : MonoBehaviour {
         playerOne = GameObject.FindGameObjectWithTag("Player One");
         playerTwo = GameObject.FindGameObjectWithTag("Player Two");
         pInput = playerTwo.GetComponent<PlayerTwoInput>();
-
-        if (this.GetComponent<Animator>() != null) {
-            anim = GetComponent<Animator>();
-        }
+        anim = GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -45,15 +42,18 @@ public class Lever : MonoBehaviour {
             if (distance > 0.6) {
                 if (angle < -30) {
                     // LOW
-                    this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, 45));
+                    //this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, 45));
+                    anim.SetInteger("LeverState", 2);
                     playerOneScript.gravity = (playerOneScript.gravity > 0) ? 5 : -5;
                 } else if (angle > 30) {
                     // HIGH
-                    this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -45));
+                    //this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, -45));
+                    anim.SetInteger("LeverState", 1);
                     playerOneScript.gravity = (playerOneScript.gravity > 0) ? 40 : -40;
                 } else {
                     // MED
-                    this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    //this.transform.parent.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    anim.SetInteger("LeverState", 0);
                     playerOneScript.gravity = (playerOneScript.gravity > 0) ? 20 : -20;
                 }
             }
@@ -82,8 +82,5 @@ public class Lever : MonoBehaviour {
                 playerOne.GetComponent<Renderer>().material.color = Color.yellow;
             }
         }
-
-        print("ANGLE: " + angle);
-        print("DISTANCE: " + distance);
     }
 }
