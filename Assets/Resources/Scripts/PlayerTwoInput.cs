@@ -15,7 +15,7 @@ public class PlayerTwoInput : MonoBehaviour {
 
     public int playerId; // The Rewired player id of this character
     public Lever[] levers;
-    public Text leverOneText;
+    public Image gravityImage;
 
     private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(playerId);
@@ -43,11 +43,11 @@ public class PlayerTwoInput : MonoBehaviour {
                     if (i == 0) {
                         levers[i].PullLever();
                         if (playerOne.gravity == 5 || playerOne.gravity == -5) {
-                            leverOneText.text = "LOW";
+                            gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconLow");
                         } else if (playerOne.gravity == 20 || playerOne.gravity == -20) {
-                            leverOneText.text = "MED";
+                            gravityImage.sprite = (Sprite)Resources.Load<Sprite>("Sprites/GravityIconMed");
                         } else if (playerOne.gravity == 40 || playerOne.gravity == -40) {
-                            leverOneText.text = "HIGH";
+                            gravityImage.sprite = (Sprite)Resources.Load<Sprite>("Sprites/GravityIconHigh");
                         }
                     // Lever two
                     } else if (i == 1) {

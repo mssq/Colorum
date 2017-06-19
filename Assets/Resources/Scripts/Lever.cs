@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Rewired;
+using UnityEngine.UI;
 
 public class Lever : MonoBehaviour {
 
@@ -12,6 +12,7 @@ public class Lever : MonoBehaviour {
 
     public Player playerOneScript;
     public Player playerTwoScript;
+    public Image playerColorImage;
     public bool leverActivated = false;
 
     private void Awake() {
@@ -71,15 +72,19 @@ public class Lever : MonoBehaviour {
             if (angle > -45 && angle < 45) {
                 anim.SetInteger("JoystickState", 1); // UP
                 playerOne.GetComponent<Renderer>().material.color = Color.red;
+                playerColorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorRed");
             } else if (angle > 45 && angle < 135) {
                 anim.SetInteger("JoystickState", 2); // RIGHT
                 playerOne.GetComponent<Renderer>().material.color = Color.blue;
+                playerColorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
             } else if (angle > 135 || angle < -135) {
                 anim.SetInteger("JoystickState", 3); // DOWN
                 playerOne.GetComponent<Renderer>().material.color = Color.green;
+                playerColorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
             } else if (angle > -135 && angle < -45) {
                 anim.SetInteger("JoystickState", 4); // LEFT
                 playerOne.GetComponent<Renderer>().material.color = Color.yellow;
+                playerColorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorYellow");
             }
         }
     }
