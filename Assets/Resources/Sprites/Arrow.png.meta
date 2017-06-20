@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 20e3cf7a72b33aa4e9315ca2f1543eb6
-timeCreated: 1497956760
+guid: 3ac72e69c0f572a49b5c05cbe0a7f8dc
+timeCreated: 1497954625
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Chooser_0
-    21300002: Chooser_1
+    21300000: Arrow_0
+    21300002: Arrow_1
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -80,28 +80,28 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Chooser_0
+      name: Arrow_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 36
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Chooser_1
+      name: Arrow_1
       rect:
         serializedVersion: 2
-        x: 36
+        x: 32
         y: 0
-        width: 36
-        height: 64
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

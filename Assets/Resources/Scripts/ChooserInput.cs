@@ -14,19 +14,29 @@ public class ChooserInput : MonoBehaviour {
     private bool resetJoystick = false;
     private GameObject playerOne;
     private Player player;
+    private SpriteRenderer sprite;
 
     private Color yellow = new Color(0.898f, 0.785f, 0.102f);
     private Color green = new Color(0.145f, 0.785f, 0.102f);
     private Color red = new Color(0.785f, 0.102f, 0.149f);
     private Color blue = new Color(0.102f, 0.141f, 0.785f);
 
+    private SpriteRenderer rArrowSprite;
+    private SpriteRenderer lArrowSprite;
+    public GameObject rArrow;
+    public GameObject lArrow;
+
     public Image gravityImage;
     public Image colorImage;
+    
 
     private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(1);
         playerOne = GameObject.FindGameObjectWithTag("Player One");
         player = playerOne.GetComponent<Player>();
+        sprite = GetComponent<SpriteRenderer>();
+        rArrowSprite = rArrow.GetComponent<SpriteRenderer>();
+        lArrowSprite = lArrow.GetComponent<SpriteRenderer>();
     }
 
     void Start() {
@@ -39,29 +49,47 @@ public class ChooserInput : MonoBehaviour {
         Vector2 directionalInput = new Vector2(rewPlayer.GetAxis("Move Horizontal P2"), rewPlayer.GetAxis("Move Vertical P2"));
 
         if (rewPlayer.GetButton("Pull Lever")) {
+            sprite.enabled = false;
             interact(directionalInput);
         } else {
             if (directionalInput.x > 0.5 && positionX == 0) {
                 // Move right
                 positionX++;
-                transform.position = new Vector2(transform.position.x + 1.4f, transform.position.y);
+                transform.position = new Vector2(transform.position.x + 1.358f, transform.position.y);
+                lArrow.transform.position = new Vector2(lArrow.transform.position.x + 1.385f, lArrow.transform.position.y);
+                rArrow.transform.position = new Vector2(rArrow.transform.position.x + 1.385f, rArrow.transform.position.y);
             } else if (directionalInput.x < -0.5 && positionX == 1) {
                 // Move left
                 positionX--;
-                transform.position = new Vector2(transform.position.x - 1.4f, transform.position.y);
+                transform.position = new Vector2(transform.position.x - 1.358f, transform.position.y);
+                lArrow.transform.position = new Vector2(lArrow.transform.position.x - 1.385f, lArrow.transform.position.y);
+                rArrow.transform.position = new Vector2(rArrow.transform.position.x - 1.385f, rArrow.transform.position.y);
             } else if (directionalInput.y > 0.5 && positionY == 1) {
                 // Move up
                 positionY--;
                 transform.position = new Vector2(transform.position.x, transform.position.y + 2.13f);
+                lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y + 2.13f);
+                rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y + 2.13f);
             } else if (directionalInput.y < -0.5 && positionY == 0) {
                 // Move down
                 positionY++;
                 transform.position = new Vector2(transform.position.x, transform.position.y - 2.13f);
+                lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y - 2.13f);
+                rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y - 2.13f);
             }
-        }     
+        }
+
+        if (rewPlayer.GetButtonUp("Pull Lever")) {
+            sprite.enabled = true;
+            lArrowSprite.enabled = false;
+            rArrowSprite.enabled = false;
+        }
     }
 
+    // When player presses button, interact with arcade machine and change player ones values
     private void interact(Vector2 input) {
+
+        showArrow();
 
         if (input.x < 0.2 && input.x > -0.2) {
             resetJoystick = false;
@@ -158,5 +186,44 @@ public class ChooserInput : MonoBehaviour {
             // Bottom right
 
         }
+    }
+
+    private void showArrow() {
+        if (positionX == 0 && positionY == 0) {
+            switch (gravityState) {
+                case 0:
+                    lArrowSprite.enabled = false;
+                    rArrowSprite.enabled = true;
+                    break;
+                case 1:
+                    lArrowSprite.enabled = true;
+                    rArrowSprite.enabled = true;
+                    break;
+                case 2:
+                    lArrowSprite.enabled = true;
+                    rArrowSprite.enabled = false;
+                    break;
+            }
+        } else if (positionX == 1 && positionY == 0) {
+            switch (colorState) {
+                case 0:
+                    lArrowSprite.enabled = false;
+                    rArrowSprite.enabled = true;
+                    break;
+                case 1:
+                    lArrowSprite.enabled = true;
+                    rArrowSprite.enabled = true;
+                    break;
+                case 2:
+                    lArrowSprite.enabled = true;
+                    rArrowSprite.enabled = true;
+                    break;
+                case 3:
+                    lArrowSprite.enabled = true;
+                    rArrowSprite.enabled = false;
+                    break;
+            }
+        }
+        
     }
 }
