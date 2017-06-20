@@ -53,4 +53,17 @@ public class Player : MonoBehaviour {
             velocity.y += gravity * Time.deltaTime;
         }
     }
+
+    public float getGravity() {
+        return this.gravity;
+    }
+
+    public void setGravity(float gravity) {
+        if (this.gravity < 0) {
+            this.gravity = -gravity;
+        } else {
+            this.gravity = gravity;
+        }
+        
+    }
 }
