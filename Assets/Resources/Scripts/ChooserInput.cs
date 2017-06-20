@@ -26,6 +26,9 @@ public class ChooserInput : MonoBehaviour {
     public GameObject rArrow;
     public GameObject lArrow;
 
+    private Animator animJoystick;
+    public GameObject arcadeJoystick;
+
     public Image gravityImage;
     public Image colorImage;
     
@@ -37,6 +40,7 @@ public class ChooserInput : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         rArrowSprite = rArrow.GetComponent<SpriteRenderer>();
         lArrowSprite = lArrow.GetComponent<SpriteRenderer>();
+        animJoystick = arcadeJoystick.GetComponent<Animator>();
     }
 
     void Start() {
@@ -58,12 +62,14 @@ public class ChooserInput : MonoBehaviour {
                 transform.position = new Vector2(transform.position.x + 1.358f, transform.position.y);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x + 1.385f, lArrow.transform.position.y);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x + 1.385f, rArrow.transform.position.y);
+                animJoystick.SetInteger("Position", 1);
             } else if (directionalInput.x < -0.5 && positionX == 1) {
                 // Move left
                 positionX--;
                 transform.position = new Vector2(transform.position.x - 1.358f, transform.position.y);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x - 1.385f, lArrow.transform.position.y);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x - 1.385f, rArrow.transform.position.y);
+                animJoystick.SetInteger("Position", 2);
             } else if (directionalInput.y > 0.5 && positionY == 1) {
                 // Move up
                 positionY--;
@@ -76,6 +82,8 @@ public class ChooserInput : MonoBehaviour {
                 transform.position = new Vector2(transform.position.x, transform.position.y - 2.13f);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y - 2.13f);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y - 2.13f);
+            } else if (directionalInput.x < 0.2 && directionalInput.x > - 0.2) {
+                animJoystick.SetInteger("Position", 0);
             }
         }
 
@@ -93,11 +101,14 @@ public class ChooserInput : MonoBehaviour {
 
         if (input.x < 0.2 && input.x > -0.2) {
             resetJoystick = false;
+            animJoystick.SetInteger("Position", 0);
         }
 
         if (positionX == 0 && positionY == 0) {
             // Top left
             if (input.x > 0.5 && !resetJoystick) {
+                animJoystick.SetInteger("Position", 1);
+
                 switch (gravityState) {
                     case 0:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
@@ -115,6 +126,8 @@ public class ChooserInput : MonoBehaviour {
                 resetJoystick = true;
 
             } else if (input.x < -0.5 && !resetJoystick) {
+                animJoystick.SetInteger("Position", 2);
+
                 switch (gravityState) {
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconLow");
@@ -135,6 +148,8 @@ public class ChooserInput : MonoBehaviour {
         } else if (positionX == 1 && positionY == 0) {
             // Top right
             if (input.x > 0.5 && !resetJoystick) {
+                animJoystick.SetInteger("Position", 1);
+
                 switch (colorState) {
                     case 0:
                         playerOne.GetComponent<Renderer>().material.color = blue;
@@ -157,6 +172,8 @@ public class ChooserInput : MonoBehaviour {
                 resetJoystick = true;
 
             } else if (input.x < -0.5 && !resetJoystick) {
+                animJoystick.SetInteger("Position", 2);
+
                 switch (colorState) {
                     case 1:
                         playerOne.GetComponent<Renderer>().material.color = red;
