@@ -19,7 +19,7 @@ public class ChooserInput : MonoBehaviour {
     private Color yellow = new Color(0.898f, 0.785f, 0.102f);
     private Color green = new Color(0.145f, 0.785f, 0.102f);
     private Color red = new Color(0.785f, 0.102f, 0.149f);
-    private Color blue = new Color(0.102f, 0.141f, 0.785f);
+    private Color blue = new Color(0.1295f, 0.165f, 0.886f);
 
     private SpriteRenderer rArrowSprite;
     private SpriteRenderer lArrowSprite;
