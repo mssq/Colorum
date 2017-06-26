@@ -12,7 +12,7 @@ public class RaycastController : MonoBehaviour {
     public const float skinWidth = .015f;
 
     // How many rays will be projected
-    const float dstBetweenRays = .2f;
+    const float dstBetweenRays = .1f;
 
     [HideInInspector]
     public int horizontalRayCount;
