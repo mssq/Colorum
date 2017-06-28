@@ -6,13 +6,8 @@ public class CameraMove : MonoBehaviour {
 
     public GameObject target;
 
-    private Renderer targetRenderer;
     private float distanceX;
     private float distanceY;
-
-    void Awake () {
-        targetRenderer = target.GetComponent<Renderer>();
-	}
 	
 	void Update () {
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(target.transform.position);
