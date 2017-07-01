@@ -9,12 +9,18 @@ public class PlayerOneInput : MonoBehaviour {
 
     private Player player;
     private Rewired.Player rewPlayer; // The Rewired Player
+    private SpriteRenderer sprite;
+    private BoxCollider2D coll;
+    private Animator anim;
 
     public int playerId; // The Rewired player id of this character
 
     private void Awake() {
         rewPlayer = ReInput.players.GetPlayer(playerId);
         player = GetComponent<Player>();
+        sprite = GetComponent<SpriteRenderer>();
+        coll = GetComponent<BoxCollider2D>();
+        anim = GetComponent<Animator>();
     }
 
     void Start() {
@@ -25,10 +31,28 @@ public class PlayerOneInput : MonoBehaviour {
     void Update() {
 
         Vector2 directionalInput = new Vector2(rewPlayer.GetAxisRaw("Move Horizontal P1"), 0);
-        player.SetDirectionalInput(directionalInput);
+        
+        if (directionalInput.x > 0 || directionalInput.x < 0) {
+            anim.SetBool("Walking", true);
+            player.SetDirectionalInput(directionalInput);
+        } else if (directionalInput.x == 0) {
+            anim.SetBool("Walking", false);
+            player.SetDirectionalInput(directionalInput);
+        }
+
+        if (directionalInput.x > 0) {
+            sprite.flipX = false;
+        } else if (directionalInput.x < 0) {
+            sprite.flipX = true;
+        }
 
         if (rewPlayer.GetButtonDown("Gravity")) {
             player.onGravityInput();
+
+            // Flip sprite and set collider offset
+            sprite.flipY = !sprite.flipY;
+            coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
+
         }
     }
 
