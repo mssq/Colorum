@@ -15,6 +15,7 @@ public class ChooserInput : MonoBehaviour {
     private GameObject playerOne;
     private Player player;
     private SpriteRenderer sprite;
+    private SpriteRenderer playerSprite;
 
     private Color yellow = new Color(0.898f, 0.785f, 0.102f);
     private Color green = new Color(0.145f, 0.785f, 0.102f);
@@ -37,6 +38,7 @@ public class ChooserInput : MonoBehaviour {
         rewPlayer = ReInput.players.GetPlayer(1);
         playerOne = GameObject.FindGameObjectWithTag("Player One");
         player = playerOne.GetComponent<Player>();
+        playerSprite = playerOne.GetComponent<SpriteRenderer>();
         sprite = GetComponent<SpriteRenderer>();
         rArrowSprite = rArrow.GetComponent<SpriteRenderer>();
         lArrowSprite = lArrow.GetComponent<SpriteRenderer>();
@@ -112,12 +114,12 @@ public class ChooserInput : MonoBehaviour {
                 switch (gravityState) {
                     case 0:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
-                        player.setGravity(20);
+                        player.setGravity(5.5f);
                         gravityState++;
                         break;
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconHigh");
-                        player.setGravity(40);
+                        player.setGravity(8);
                         gravityState++;
                         break;
                     default:
@@ -131,12 +133,12 @@ public class ChooserInput : MonoBehaviour {
                 switch (gravityState) {
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconLow");
-                        player.setGravity(5);
+                        player.setGravity(3);
                         gravityState--;
                         break;
                     case 2:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
-                        player.setGravity(20);
+                        player.setGravity(5.5f);
                         gravityState--;
                         break;
                     default:
@@ -152,17 +154,17 @@ public class ChooserInput : MonoBehaviour {
 
                 switch (colorState) {
                     case 0:
-                        playerOne.GetComponent<Renderer>().material.color = blue;
+                        playerSprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState++;
                         break;
                     case 1:
-                        playerOne.GetComponent<Renderer>().material.color = green;
+                        playerSprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState++;
                         break;
                     case 2:
-                        playerOne.GetComponent<Renderer>().material.color = yellow;
+                        playerSprite.color = yellow;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorYellow");
                         colorState++;
                         break;
@@ -176,17 +178,17 @@ public class ChooserInput : MonoBehaviour {
 
                 switch (colorState) {
                     case 1:
-                        playerOne.GetComponent<Renderer>().material.color = red;
+                        playerSprite.color = red;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorRed");
                         colorState--;
                         break;
                     case 2:
-                        playerOne.GetComponent<Renderer>().material.color = blue;
+                        playerSprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState--;
                         break;
                     case 3:
-                        playerOne.GetComponent<Renderer>().material.color = green;
+                        playerSprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState--;
                         break;

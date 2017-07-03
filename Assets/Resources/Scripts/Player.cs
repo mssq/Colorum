@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
     public float accelerationTimeGrounded = .1f;
     public float moveSpeed = 6;
     public float gravity = -20;
+    public ParticleSystem deathParticle;
 
 	private void Awake () {
         camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour {
 
     private void Update() {
         CalculateVelocity();
-
+        //print("VELOCITY: " + velocity);
         controller.Move(velocity * Time.deltaTime, directionalInput);
 
         if (controller.collisions.above || controller.collisions.below) {
@@ -38,6 +39,9 @@ public class Player : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collider) {
         if (collider.tag == "Threat") {
             camShake.Shake(0.08f, 0.25f);
+            deathParticle.transform.position = this.transform.position;
+            deathParticle.Play();
+
             gameObject.SetActive(false);
         }
     }
@@ -59,7 +63,7 @@ public class Player : MonoBehaviour {
         if (gravity > 0 && velocity.y > gravity || gravity < 0 && velocity.y < gravity) {
             velocity.y = gravity;
         } else {
-            velocity.y += gravity * Time.deltaTime;
+            velocity.y += gravity * (Time.deltaTime * 2);
         }
     }
 
