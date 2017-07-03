@@ -6,22 +6,41 @@ using UnityEngine;
 [RequireComponent (typeof (Controller2D))]
 public class Player : MonoBehaviour {
 
+    // Reference to the player controller script
+    private Controller2D controller;
+    private CameraShake camShake;
+
+    private Vector3 velocity;
+    private float velocityXSmoothing;
+
+    private Vector2 directionalInput;
+
     public float accelerationTimeAirborne = .2f;
     public float accelerationTimeGrounded = .1f;
     public float moveSpeed = 6;
     public float gravity = -20;
 
-    Vector3 velocity;
-    float velocityXSmoothing;
-
-    Vector2 directionalInput;
-
-    // Reference to the player controller script
-    Controller2D controller;
-
-	void Awake () {
+	private void Awake () {
+        camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
         controller = GetComponent<Controller2D>();
 	}
+
+    private void Update() {
+        CalculateVelocity();
+
+        controller.Move(velocity * Time.deltaTime, directionalInput);
+
+        if (controller.collisions.above || controller.collisions.below) {
+            velocity.y = 0;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider) {
+        if (collider.tag == "Threat") {
+            camShake.Shake(0.08f, 0.25f);
+            gameObject.SetActive(false);
+        }
+    }
 
     public void SetDirectionalInput (Vector2 input) {
         directionalInput = input;
@@ -30,16 +49,6 @@ public class Player : MonoBehaviour {
     public void onGravityInput() {
         if (controller.collisions.below || controller.collisions.above) {
             gravity *= -1;
-        }
-    }
-	
-	void Update () {
-        CalculateVelocity();
-
-        controller.Move(velocity * Time.deltaTime, directionalInput);
-
-        if (controller.collisions.above || controller.collisions.below) {
-            velocity.y = 0;
         }
     }
 

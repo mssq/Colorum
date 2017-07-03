@@ -12,6 +12,7 @@ public class PlayerOneInput : MonoBehaviour {
     private SpriteRenderer sprite;
     private BoxCollider2D coll;
     private Animator anim;
+    private Controller2D controller;
 
     public int playerId; // The Rewired player id of this character
 
@@ -21,6 +22,7 @@ public class PlayerOneInput : MonoBehaviour {
         sprite = GetComponent<SpriteRenderer>();
         coll = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
+        controller = GetComponent<Controller2D>();
     }
 
     void Start() {
@@ -47,12 +49,14 @@ public class PlayerOneInput : MonoBehaviour {
         }
 
         if (rewPlayer.GetButtonDown("Gravity")) {
-            player.onGravityInput();
+            // If touching ground or ceiling
+            if (controller.collisions.above || controller.collisions.below) {
+                player.onGravityInput();
 
-            // Flip sprite and set collider offset
-            sprite.flipY = !sprite.flipY;
-            coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
-
+                // Flip sprite and set collider offset
+                sprite.flipY = !sprite.flipY;
+                coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
+            }
         }
     }
 
