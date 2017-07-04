@@ -4,10 +4,8 @@ using UnityEngine;
 
 
 [RequireComponent (typeof (Controller2D))]
-public class Player : MonoBehaviour {
+public class Player : PlayerManager {
 
-    // Reference to the player controller script
-    private Controller2D controller;
     private CameraShake camShake;
 
     private Vector3 velocity;
@@ -15,16 +13,23 @@ public class Player : MonoBehaviour {
 
     private Vector2 directionalInput;
 
+    private SaveInformation saveInf;
+
     public float accelerationTimeAirborne = .2f;
     public float accelerationTimeGrounded = .1f;
     public float moveSpeed = 6;
     public float gravity = -20;
     public ParticleSystem deathParticle;
 
-	private void Awake () {
+	protected override void Awake () {
+        base.Awake();
+
         camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
-        controller = GetComponent<Controller2D>();
 	}
+
+    private void Start() {
+        saveInf = gameObject.AddComponent<SaveInformation>();
+    }
 
     private void Update() {
         CalculateVelocity();
@@ -41,8 +46,16 @@ public class Player : MonoBehaviour {
             camShake.Shake(0.08f, 0.25f);
             deathParticle.transform.position = this.transform.position;
             deathParticle.Play();
+            gameObject.SetActive(false);  
 
-            gameObject.SetActive(false);
+        } else if (collider.tag == "Checkpoint") {
+            Transform trans = collider.GetComponent<Transform>();
+            if (spawnLocation.transform.position != trans.position) {
+                // Move spawnLocation to position of this savepoint
+                spawnLocation.transform.position = trans.position;
+                // Save this information to the playerprefs.
+                saveInf.SaveAllInfromation();
+            }
         }
     }
 
@@ -67,11 +80,15 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void ResetVelocity() {
+        velocity = Vector3.zero;
+    }
+
     public float getGravity() {
         return this.gravity;
     }
 
-    public void setGravity(float gravity) {
+    public void SetGravity(float gravity) {
         if (this.gravity < 0) {
             this.gravity = -gravity;
         } else {

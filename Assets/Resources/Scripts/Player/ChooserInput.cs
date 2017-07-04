@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
-public class ChooserInput : MonoBehaviour {
+public class ChooserInput : PlayerManager {
 
-    private Rewired.Player rewPlayer; // The Rewired Player
     private int positionX = 0;
     private int positionY = 0;
     private int gravityState = 1; // 0 = low, 1 = med, 2 = high
@@ -14,13 +13,8 @@ public class ChooserInput : MonoBehaviour {
     private bool resetJoystick = false;
     private GameObject playerOne;
     private Player player;
-    private SpriteRenderer sprite;
+    private SpriteRenderer chooserSprite;
     private SpriteRenderer playerSprite;
-
-    private Color yellow = new Color(0.898f, 0.785f, 0.102f);
-    private Color green = new Color(0.145f, 0.785f, 0.102f);
-    private Color red = new Color(0.785f, 0.102f, 0.149f);
-    private Color blue = new Color(0.1295f, 0.165f, 0.886f);
 
     private SpriteRenderer rArrowSprite;
     private SpriteRenderer lArrowSprite;
@@ -34,12 +28,11 @@ public class ChooserInput : MonoBehaviour {
     public Image colorImage;
     
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
+
         rewPlayer = ReInput.players.GetPlayer(1);
-        playerOne = GameObject.FindGameObjectWithTag("Player One");
-        player = playerOne.GetComponent<Player>();
-        playerSprite = playerOne.GetComponent<SpriteRenderer>();
-        sprite = GetComponent<SpriteRenderer>();
+        chooserSprite = GetComponent<SpriteRenderer>();
         rArrowSprite = rArrow.GetComponent<SpriteRenderer>();
         lArrowSprite = lArrow.GetComponent<SpriteRenderer>();
         animJoystick = arcadeJoystick.GetComponent<Animator>();
@@ -55,7 +48,7 @@ public class ChooserInput : MonoBehaviour {
         Vector2 directionalInput = new Vector2(rewPlayer.GetAxis("Move Horizontal P2"), rewPlayer.GetAxis("Move Vertical P2"));
 
         if (rewPlayer.GetButton("Pull Lever")) {
-            sprite.enabled = false;
+            chooserSprite.enabled = false;
             interact(directionalInput);
         } else {
             if (directionalInput.x > 0.5 && positionX == 0) {
@@ -90,7 +83,7 @@ public class ChooserInput : MonoBehaviour {
         }
 
         if (rewPlayer.GetButtonUp("Pull Lever")) {
-            sprite.enabled = true;
+            chooserSprite.enabled = true;
             lArrowSprite.enabled = false;
             rArrowSprite.enabled = false;
         }
@@ -114,12 +107,12 @@ public class ChooserInput : MonoBehaviour {
                 switch (gravityState) {
                     case 0:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
-                        player.setGravity(5.5f);
+                        playerScript.SetGravity(5.5f);
                         gravityState++;
                         break;
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconHigh");
-                        player.setGravity(8);
+                        playerScript.SetGravity(8);
                         gravityState++;
                         break;
                     default:
@@ -133,12 +126,12 @@ public class ChooserInput : MonoBehaviour {
                 switch (gravityState) {
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconLow");
-                        player.setGravity(3);
+                        playerScript.SetGravity(3);
                         gravityState--;
                         break;
                     case 2:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
-                        player.setGravity(5.5f);
+                        playerScript.SetGravity(5.5f);
                         gravityState--;
                         break;
                     default:
@@ -154,17 +147,17 @@ public class ChooserInput : MonoBehaviour {
 
                 switch (colorState) {
                     case 0:
-                        playerSprite.color = blue;
+                        sprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState++;
                         break;
                     case 1:
-                        playerSprite.color = green;
+                        sprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState++;
                         break;
                     case 2:
-                        playerSprite.color = yellow;
+                        sprite.color = yellow;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorYellow");
                         colorState++;
                         break;
@@ -178,17 +171,17 @@ public class ChooserInput : MonoBehaviour {
 
                 switch (colorState) {
                     case 1:
-                        playerSprite.color = red;
+                        sprite.color = red;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorRed");
                         colorState--;
                         break;
                     case 2:
-                        playerSprite.color = blue;
+                        sprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState--;
                         break;
                     case 3:
-                        playerSprite.color = green;
+                        sprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState--;
                         break;

@@ -5,29 +5,15 @@ using UnityEngine.UI;
 using Rewired;
 
 [RequireComponent(typeof(Player))]
-public class PlayerOneInput : MonoBehaviour {
+public class PlayerOneInput : PlayerManager {
 
-    private Player player;
-    private Rewired.Player rewPlayer; // The Rewired Player
-    private SpriteRenderer sprite;
-    private BoxCollider2D coll;
-    private Animator anim;
-    private Controller2D controller;
-
-    public int playerId; // The Rewired player id of this character
-
-    private void Awake() {
-        rewPlayer = ReInput.players.GetPlayer(playerId);
-        player = GetComponent<Player>();
-        sprite = GetComponent<SpriteRenderer>();
-        coll = GetComponent<BoxCollider2D>();
-        anim = GetComponent<Animator>();
-        controller = GetComponent<Controller2D>();
-    }
+    private LoadInformation loadInf;
 
     void Start() {
         Rewired.Controller j = ReInput.controllers.GetController(ControllerType.Joystick, 0);
         rewPlayer.controllers.AddController(j, false);
+        // Set player to right position at the beginning of the game
+        StartCoroutine(Restart(0f));
     }
 
     void Update() {
@@ -36,10 +22,10 @@ public class PlayerOneInput : MonoBehaviour {
         
         if (directionalInput.x > 0 || directionalInput.x < 0) {
             anim.SetBool("Walking", true);
-            player.SetDirectionalInput(directionalInput);
+            playerScript.SetDirectionalInput(directionalInput);
         } else if (directionalInput.x == 0) {
             anim.SetBool("Walking", false);
-            player.SetDirectionalInput(directionalInput);
+            playerScript.SetDirectionalInput(directionalInput);
         }
 
         if (directionalInput.x > 0) {
@@ -51,12 +37,16 @@ public class PlayerOneInput : MonoBehaviour {
         if (rewPlayer.GetButtonDown("Gravity")) {
             // If touching ground or ceiling
             if (controller.collisions.above || controller.collisions.below) {
-                player.onGravityInput();
+                playerScript.onGravityInput();
 
                 // Flip sprite and set collider offset
                 sprite.flipY = !sprite.flipY;
                 coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
             }
+        }
+
+        if (rewPlayer.GetButtonDown("Restart")) {
+            StartCoroutine(Restart(0.2f));
         }
     }
 
@@ -66,5 +56,32 @@ public class PlayerOneInput : MonoBehaviour {
 
     public float getAxisVertical() {
         return rewPlayer.GetAxis("Move Vertical P1");
+    }
+
+    IEnumerator Restart(float waitTime) {
+
+        yield return new WaitForSeconds(waitTime);
+
+        if (loadInf == null) {
+            loadInf = gameObject.AddComponent<LoadInformation>();
+        }
+
+        loadInf.LoadAllInformation();
+
+        // If player is upsidedown reset him
+        if (Mathf.Sign(playerScript.gravity) == 1) {
+            sprite.flipY = false;
+            playerScript.ResetVelocity();
+            coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
+            playerScript.gravity = -playerScript.gravity;
+        }
+        // Put player to spawn location
+        playerTransform.position = spawnLocation.position;
+
+        if (playerObject.activeInHierarchy == false) {
+            playerObject.SetActive(true);
+        }
+
+        yield return null;
     }
 }
