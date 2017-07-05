@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Rewired;
 
@@ -8,14 +6,11 @@ public class ChooserInput : PlayerManager {
 
     private int positionX = 0;
     private int positionY = 0;
+    private bool resetJoystick = false;
     private int gravityState = 1; // 0 = low, 1 = med, 2 = high
     private int colorState = 0; // 0 = red, 1 = blue, 2 = green, 3 = yellow
-    private bool resetJoystick = false;
-    private GameObject playerOne;
-    private Player player;
-    private SpriteRenderer chooserSprite;
-    private SpriteRenderer playerSprite;
 
+    private SpriteRenderer chooserSprite;
     private SpriteRenderer rArrowSprite;
     private SpriteRenderer lArrowSprite;
     public GameObject rArrow;
@@ -237,5 +232,21 @@ public class ChooserInput : PlayerManager {
             }
         }
         
+    }
+
+    public int getColorState() {
+        return colorState;
+    }
+
+    public void setColorState(int colorState) {
+        this.colorState = colorState;
+    }
+
+    public int getGravityState() {
+        return gravityState;
+    }
+
+    public void setGravityState(int gravityState) {
+        this.gravityState = gravityState;
     }
 }

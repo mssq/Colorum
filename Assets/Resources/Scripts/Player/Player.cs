@@ -7,13 +7,13 @@ using UnityEngine;
 public class Player : PlayerManager {
 
     private CameraShake camShake;
+    private LoadInformation loadInf;
+    private SaveInformation saveInf;
 
     private Vector3 velocity;
     private float velocityXSmoothing;
 
     private Vector2 directionalInput;
-
-    private SaveInformation saveInf;
 
     public float accelerationTimeAirborne = .2f;
     public float accelerationTimeGrounded = .1f;
@@ -25,11 +25,11 @@ public class Player : PlayerManager {
         base.Awake();
 
         camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
-	}
-
-    private void Start() {
-        saveInf = gameObject.AddComponent<SaveInformation>();
+        loadInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<LoadInformation>();
+        saveInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<SaveInformation>();
     }
+
+
 
     private void Update() {
         CalculateVelocity();
@@ -46,16 +46,23 @@ public class Player : PlayerManager {
             camShake.Shake(0.08f, 0.25f);
             deathParticle.transform.position = this.transform.position;
             deathParticle.Play();
-            gameObject.SetActive(false);  
+            StartCoroutine(Restart(1f));
+
+            playerInput.enabled = false;
+            sprite.enabled = false;
+            coll.enabled = false;
 
         } else if (collider.tag == "Checkpoint") {
             Transform trans = collider.GetComponent<Transform>();
-            if (spawnLocation.transform.position != trans.position) {
-                // Move spawnLocation to position of this savepoint
-                spawnLocation.transform.position = trans.position;
-                // Save this information to the playerprefs.
-                saveInf.SaveAllInfromation();
-            }
+            //if (spawnLocation.transform.position != trans.position) {}
+
+            // Move spawnLocation to position of this savepoint
+            spawnLocation.transform.position = trans.position;
+            // Save this information to the playerprefs.
+            saveInf.SavePosInfromation();
+            saveInf.SaveColorChanging(chooserInput.getColorState());
+            saveInf.SaveGravityChanging(chooserInput.getGravityState());
+            
         }
     }
 
@@ -78,6 +85,32 @@ public class Player : PlayerManager {
         } else {
             velocity.y += gravity * (Time.deltaTime * 2);
         }
+    }
+
+    public IEnumerator Restart(float waitTime) {
+
+        yield return new WaitForSeconds(waitTime);
+
+        loadInf.LoadAllInformation();
+
+        // If player is upsidedown reset him
+        if (Mathf.Sign(playerScript.gravity) == 1) {
+            sprite.flipY = false;
+            playerScript.ResetVelocity();
+            coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
+            playerScript.gravity = -playerScript.gravity;
+        }
+        // Put player to spawn location
+        playerTransform.position = spawnLocation.position;
+
+        if (!playerInput.enabled)
+            playerInput.enabled = true;
+        if (!sprite.enabled)
+            sprite.enabled = true;
+        if (!coll.enabled)
+            coll.enabled = true;
+
+        yield return null;
     }
 
     public void ResetVelocity() {

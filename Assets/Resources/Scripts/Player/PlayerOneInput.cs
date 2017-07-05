@@ -7,13 +7,11 @@ using Rewired;
 [RequireComponent(typeof(Player))]
 public class PlayerOneInput : PlayerManager {
 
-    private LoadInformation loadInf;
-
     void Start() {
         Rewired.Controller j = ReInput.controllers.GetController(ControllerType.Joystick, 0);
         rewPlayer.controllers.AddController(j, false);
         // Set player to right position at the beginning of the game
-        StartCoroutine(Restart(0f));
+        StartCoroutine(playerScript.Restart(0f));
     }
 
     void Update() {
@@ -46,7 +44,7 @@ public class PlayerOneInput : PlayerManager {
         }
 
         if (rewPlayer.GetButtonDown("Restart")) {
-            StartCoroutine(Restart(0.2f));
+            StartCoroutine(playerScript.Restart(0.2f));
         }
     }
 
@@ -58,30 +56,4 @@ public class PlayerOneInput : PlayerManager {
         return rewPlayer.GetAxis("Move Vertical P1");
     }
 
-    IEnumerator Restart(float waitTime) {
-
-        yield return new WaitForSeconds(waitTime);
-
-        if (loadInf == null) {
-            loadInf = gameObject.AddComponent<LoadInformation>();
-        }
-
-        loadInf.LoadAllInformation();
-
-        // If player is upsidedown reset him
-        if (Mathf.Sign(playerScript.gravity) == 1) {
-            sprite.flipY = false;
-            playerScript.ResetVelocity();
-            coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
-            playerScript.gravity = -playerScript.gravity;
-        }
-        // Put player to spawn location
-        playerTransform.position = spawnLocation.position;
-
-        if (playerObject.activeInHierarchy == false) {
-            playerObject.SetActive(true);
-        }
-
-        yield return null;
-    }
 }
