@@ -15,6 +15,8 @@ public class Player : PlayerManager {
 
     private Vector2 directionalInput;
 
+    private GameObject[] checkpoints;
+
     public float accelerationTimeAirborne = .2f;
     public float accelerationTimeGrounded = .1f;
     public float moveSpeed = 6;
@@ -27,6 +29,7 @@ public class Player : PlayerManager {
         camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
         loadInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<LoadInformation>();
         saveInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<SaveInformation>();
+        checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
     }
 
 
@@ -56,14 +59,35 @@ public class Player : PlayerManager {
             Transform trans = collider.GetComponent<Transform>();
             //if (spawnLocation.transform.position != trans.position) {}
 
-            // Move spawnLocation to position of this savepoint
-            spawnLocation.transform.position = trans.position;
-            // Save this information to the playerprefs.
-            saveInf.SavePosInfromation();
-            saveInf.SaveColorChanging(chooserInput.getColorState());
-            saveInf.SaveGravityChanging(chooserInput.getGravityState());
-            
+            if (PlayerPrefs.GetInt("COLOR") != chooserInput.getColorState() ||
+                PlayerPrefs.GetInt("GRAVITY") != chooserInput.getGravityState()) {
+
+                getCheckpoints(true);
+
+                // Move spawnLocation to position of this savepoint
+                spawnLocation.transform.position = trans.position;
+
+                // Save this information to the playerprefs.
+                saveInf.SavePosInfromation();
+                saveInf.SaveColorChanging(chooserInput.getColorState());
+                saveInf.SaveGravityChanging(chooserInput.getGravityState());
+            }
         }
+    }
+
+    // Get all checkpoints and stop or play animation
+    private void getCheckpoints(bool activated) {
+
+        foreach (GameObject checkpoint in checkpoints) {
+            Animator cpAnim = checkpoint.GetComponent<Animator>();
+            cpAnim.SetBool("Activated", activated);
+        }
+    }
+
+    private IEnumerator WaitForAnimation(Animation animation) {
+        do {
+            yield return null;
+        } while (animation.isPlaying);
     }
 
     public void SetDirectionalInput (Vector2 input) {
