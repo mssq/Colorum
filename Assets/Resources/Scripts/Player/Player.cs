@@ -46,15 +46,22 @@ public class Player : PlayerManager {
 
     private void OnTriggerEnter2D(Collider2D collider) {
         if (collider.tag == "Threat") {
-            camShake.Shake(0.08f, 0.25f);
-            deathParticle.transform.position = this.transform.position;
-            deathParticle.Play();
-            StartCoroutine(Restart(1f));
+            print("SPRITE COLOR RED: " + sprite.color.r);
+            print("SPRITE COLOR BLUE: " + sprite.color.b);
+            print("SPRITE COLOR GREEN: " + sprite.color.g);
+            print("THREAT COLOR: RED" + collider.GetComponent<SpriteRenderer>().color.r);
+            print("THREAT COLOR: BLUE" + collider.GetComponent<SpriteRenderer>().color.b);
+            print("THREAT COLOR: GREEN" + collider.GetComponent<SpriteRenderer>().color.g);
+            if (collider.GetComponent<SpriteRenderer>().color != sprite.color) {
+                camShake.Shake(0.08f, 0.25f);
+                deathParticle.transform.position = this.transform.position;
+                deathParticle.Play();
+                StartCoroutine(Restart(1f));
 
-            playerInput.enabled = false;
-            sprite.enabled = false;
-            coll.enabled = false;
-
+                playerInput.enabled = false;
+                sprite.enabled = false;
+                coll.enabled = false;
+            }
         } else if (collider.tag == "Checkpoint") {
             Transform trans = collider.GetComponent<Transform>();
             //if (spawnLocation.transform.position != trans.position) {}

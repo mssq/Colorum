@@ -19,8 +19,8 @@ public class PlayerManager : MonoBehaviour {
 
     protected Color yellow = new Color(0.898f, 0.785f, 0.102f);
     protected Color green = new Color(0.145f, 0.785f, 0.102f);
-    protected Color red = new Color(0.785f, 0.102f, 0.149f);
-    protected Color blue = new Color(0.1295f, 0.165f, 0.886f);
+    protected Color red = new Color(0.784f, 0.102f, 0.149f);
+    protected Color blue = new Color(0.129f, 0.165f, 0.886f);
 
     protected virtual void Awake() {
         playerObject = GameObject.FindGameObjectWithTag("Player One");
