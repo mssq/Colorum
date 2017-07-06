@@ -37,6 +37,8 @@ public class PlayerOneInput : PlayerManager {
             if (controller.collisions.above || controller.collisions.below) {
                 playerScript.onGravityInput();
 
+                //anim.SetBool("Grounded", false);
+
                 // Flip sprite and set collider offset
                 sprite.flipY = !sprite.flipY;
                 coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);

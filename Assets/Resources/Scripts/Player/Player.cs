@@ -41,17 +41,19 @@ public class Player : PlayerManager {
 
         if (controller.collisions.above || controller.collisions.below) {
             velocity.y = 0;
+
+            if (anim.GetBool("Grounded") == false) {
+                anim.SetBool("Grounded", true);
+            }
+        } else if (!controller.collisions.above || !controller.collisions.below) {
+            if (anim.GetBool("Grounded") == true) {
+                anim.SetBool("Grounded", false);
+            }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collider) {
         if (collider.tag == "Threat") {
-            print("SPRITE COLOR RED: " + sprite.color.r);
-            print("SPRITE COLOR BLUE: " + sprite.color.b);
-            print("SPRITE COLOR GREEN: " + sprite.color.g);
-            print("THREAT COLOR: RED" + collider.GetComponent<SpriteRenderer>().color.r);
-            print("THREAT COLOR: BLUE" + collider.GetComponent<SpriteRenderer>().color.b);
-            print("THREAT COLOR: GREEN" + collider.GetComponent<SpriteRenderer>().color.g);
             if (collider.GetComponent<SpriteRenderer>().color != sprite.color) {
                 camShake.Shake(0.08f, 0.25f);
                 deathParticle.transform.position = this.transform.position;
