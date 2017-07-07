@@ -66,10 +66,10 @@ public class Player : PlayerManager {
             }
         } else if (collider.tag == "Checkpoint") {
             Transform trans = collider.GetComponent<Transform>();
-            //if (spawnLocation.transform.position != trans.position) {}
 
             if (PlayerPrefs.GetInt("COLOR") != chooserInput.getColorState() ||
-                PlayerPrefs.GetInt("GRAVITY") != chooserInput.getGravityState()) {
+                PlayerPrefs.GetInt("GRAVITY") != chooserInput.getGravityState() ||
+                spawnLocation.transform.position != trans.position) {
 
                 getCheckpoints(true);
 
