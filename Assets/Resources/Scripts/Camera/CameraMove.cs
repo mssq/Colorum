@@ -8,8 +8,16 @@ public class CameraMove : MonoBehaviour {
 
     private float distanceX;
     private float distanceY;
-	
-	void Update () {
+
+    private void Start() {
+        MoveCamera();
+    }
+
+    void Update () {
+        MoveCamera();
+    }
+
+    private void MoveCamera() {
         Vector3 screenPoint = Camera.main.WorldToViewportPoint(target.transform.position);
         bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
@@ -31,6 +39,5 @@ public class CameraMove : MonoBehaviour {
                 this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 11, this.transform.position.z);
             }
         }
-        
     }
 }

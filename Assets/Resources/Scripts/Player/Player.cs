@@ -52,7 +52,7 @@ public class Player : PlayerManager {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider) {
+    private void OnTriggerStay2D(Collider2D collider) {
         if (collider.tag == "Threat") {
             if (collider.GetComponent<SpriteRenderer>().color != sprite.color) {
                 camShake.Shake(0.08f, 0.25f);
