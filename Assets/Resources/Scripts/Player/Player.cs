@@ -40,7 +40,10 @@ public class Player : PlayerManager {
         controller.Move(velocity * Time.deltaTime, directionalInput);
 
         if (controller.collisions.above || controller.collisions.below) {
-            velocity.y = 0;
+
+            if (platformController.passengerMovement.Count == 0) {
+                velocity.y = 0;
+            }
 
             if (anim.GetBool("Grounded") == false) {
                 anim.SetBool("Grounded", true);

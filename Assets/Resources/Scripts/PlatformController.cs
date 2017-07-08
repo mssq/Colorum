@@ -19,7 +19,7 @@ public class PlatformController : RaycastController {
     float percentBetweenWaypoints;
     float nextMoveTime;
 
-    List<PassengerMovement> passengerMovement;
+    public List<PassengerMovement> passengerMovement;
     Dictionary<Transform, Controller2D> passengerDictionary = new Dictionary<Transform, Controller2D>();
 
     public override void Start() {
@@ -96,7 +96,7 @@ public class PlatformController : RaycastController {
         HashSet<Transform> movedPassengers = new HashSet<Transform>();
         passengerMovement = new List<PassengerMovement>();
 
-        float directionX = Mathf.Sign(velocity.x);
+        //float directionX = Mathf.Sign(velocity.x);
         float directionY = Mathf.Sign(velocity.y);
 
         // Vertically moving platform
@@ -142,7 +142,7 @@ public class PlatformController : RaycastController {
         }
 
         // On a horizontally moving platform upside down
-        if (directionY == -1 || velocity.y == 0 && velocity.x != 0) {
+        if (directionY == 1 || velocity.y == 0 && velocity.x != 0) {
             float rayLength = skinWidth * 2;
 
             for (int i = 0; i < verticalRayCount; i++) {
@@ -163,7 +163,7 @@ public class PlatformController : RaycastController {
         }
     }
 
-    struct PassengerMovement {
+    public struct PassengerMovement {
         public Transform transform;
         public Vector3 velocity;
         public bool standingOnPlatform;

@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour {
     protected Controller2D controller;
     protected BoxCollider2D coll;
     protected ChooserInput chooserInput;
+    protected PlatformController platformController;
 
     protected Color yellow = new Color(0.898f, 0.785f, 0.102f);
     protected Color green = new Color(0.145f, 0.785f, 0.102f);
@@ -34,5 +35,6 @@ public class PlayerManager : MonoBehaviour {
         controller = playerObject.GetComponent<Controller2D>();
         anim = playerObject.GetComponent<Animator>();
         chooserInput = GameObject.FindGameObjectWithTag("Player Two").GetComponent<ChooserInput>();
+        platformController = GameObject.FindGameObjectWithTag("Moving Platform").GetComponent<PlatformController>();
     }
 }
