@@ -99,28 +99,7 @@ public class PlatformController : RaycastController {
         //float directionX = Mathf.Sign(velocity.x);
         float directionY = Mathf.Sign(velocity.y);
 
-        // Vertically moving platform
-        if (velocity.y != 0) {
-            float rayLength = Mathf.Abs(velocity.y) + skinWidth;
-
-            for (int i = 0; i < verticalRayCount; i++) {
-                Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
-                rayOrigin += Vector2.right * (verticalRaySpacing * i);
-                RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, passengerMask);
-
-                if (hit && hit.distance != 0) {
-                    if (!movedPassengers.Contains(hit.transform)) {
-                        movedPassengers.Add(hit.transform);
-                        float pushX = (directionY == 1) ? velocity.x : 0;
-                        float pushY = velocity.y - (hit.distance - skinWidth) * directionY;
-
-                        passengerMovement.Add(new PassengerMovement(hit.transform, new Vector3(pushX, pushY), directionY == 1, true));
-                    }
-                }
-            }
-        }
-
-        // On a horizontally moving platform right way around
+        // Passenger on top of a horizontally or downward moving platform
         if (directionY == -1 || velocity.y == 0 && velocity.x != 0) {
             float rayLength = skinWidth * 2;
 
@@ -129,7 +108,6 @@ public class PlatformController : RaycastController {
                 RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up, rayLength, passengerMask);
 
                 if (hit && hit.distance != 0) {
-
                     if (!movedPassengers.Contains(hit.transform)) {
                         movedPassengers.Add(hit.transform);
                         float pushX = velocity.x;
@@ -142,7 +120,7 @@ public class PlatformController : RaycastController {
         }
 
         // On a horizontally moving platform upside down
-        if (directionY == 1 || velocity.y == 0 && velocity.x != 0) {
+        if (directionY == -1 || velocity.y == 0 && velocity.x != 0) {
             float rayLength = skinWidth * 2;
 
             for (int i = 0; i < verticalRayCount; i++) {
@@ -152,6 +130,7 @@ public class PlatformController : RaycastController {
                 if (hit && hit.distance != 0) {
 
                     if (!movedPassengers.Contains(hit.transform)) {
+
                         movedPassengers.Add(hit.transform);
                         float pushX = velocity.x;
                         float pushY = velocity.y;

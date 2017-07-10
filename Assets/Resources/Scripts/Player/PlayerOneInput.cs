@@ -28,8 +28,17 @@ public class PlayerOneInput : PlayerManager {
 
         if (directionalInput.x > 0) {
             sprite.flipX = false;
+
+            /*if (coll.offset.x > 0) {
+                coll.offset = new Vector2(coll.offset.x * -1, coll.offset.y);
+            }*/
+
         } else if (directionalInput.x < 0) {
             sprite.flipX = true;
+
+            /*if (coll.offset.x < 0) {
+                coll.offset = new Vector2(coll.offset.x * -1, coll.offset.y);
+            }*/
         }
 
         if (rewPlayer.GetButtonDown("Gravity")) {
