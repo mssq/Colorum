@@ -23,4 +23,16 @@ public class Laser : PlayerManager {
             laserSprite.color = yellow;
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag == "Change Red") {
+            laserSprite.color = red;
+        } else if (collision.tag == "Change Blue") {
+            laserSprite.color = blue;
+        } else if (collision.tag == "Change Green") {
+            laserSprite.color = green;
+        } else if (collision.tag == "Change Yellow") {
+            laserSprite.color = yellow;
+        }
+    }
 }

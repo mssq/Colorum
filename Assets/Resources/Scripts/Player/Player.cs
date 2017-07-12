@@ -77,7 +77,7 @@ public class Player : PlayerManager {
                 getCheckpoints(true);
 
                 // Move spawnLocation to position of this savepoint
-                spawnLocation.transform.position = trans.position;
+                spawnLocation.transform.position = new Vector3(trans.position.x, trans.position.y - 0.3f, trans.position.z);
 
                 // Save this information to the playerprefs.
                 saveInf.SavePosInfromation();
