@@ -72,7 +72,7 @@ public class Player : PlayerManager {
 
             if (PlayerPrefs.GetInt("COLOR") != chooserInput.getColorState() ||
                 PlayerPrefs.GetInt("GRAVITY") != chooserInput.getGravityState() ||
-                spawnLocation.transform.position != trans.position) {
+                spawnLocation.transform.position.x != trans.position.x) {
 
                 getCheckpoints(true);
 
