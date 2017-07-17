@@ -31,11 +31,11 @@ public class Controller : MonoBehaviour {
         if (directionalInput.y > 0.5 && buttonState == 1) {
             // Move down
             buttonState--;
-            transform.position = new Vector2(transform.position.x, transform.position.y + 0.51f);
+            transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y + 0.53f, transform.position.z);
         } else if (directionalInput.y < -0.5 && buttonState == 0) {
             // Move up
             buttonState++;
-            transform.position = new Vector2(transform.position.x, transform.position.y - 0.51f);
+            transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.53f, transform.position.z);
         }
 
         if (rewPlayer.GetButton("Action")) {
