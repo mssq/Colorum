@@ -13,11 +13,15 @@ public class Controller : MonoBehaviour {
     private Rewired.Player rewPlayer;
     private ButtonManager manager;
 
+    private SpriteRenderer playerSpr;
+    public GameObject player;
+
     private void Awake() {
         positionX = this.transform.position.x;
         positionY = this.transform.position.y;
         rewPlayer = ReInput.players.GetPlayer(0);
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ButtonManager>();
+        playerSpr = player.GetComponent<SpriteRenderer>();
     }
 
     void Start() {
@@ -32,10 +36,12 @@ public class Controller : MonoBehaviour {
             // Move down
             buttonState--;
             transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y + 0.53f, transform.position.z);
+            playerSpr.flipX = false;
         } else if (directionalInput.y < -0.5 && buttonState == 0) {
             // Move up
             buttonState++;
             transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.53f, transform.position.z);
+            playerSpr.flipX = true;
         }
 
         if (rewPlayer.GetButton("Action")) {
