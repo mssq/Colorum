@@ -22,6 +22,7 @@ public class Player : PlayerManager {
     public float moveSpeed = 6;
     public float gravity = -20;
     public ParticleSystem deathParticle;
+    public GameObject castleSevenBlock;
 
 	protected override void Awake () {
         base.Awake();
@@ -52,6 +53,21 @@ public class Player : PlayerManager {
             if (anim.GetBool("Grounded") == true) {
                 anim.SetBool("Grounded", false);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.tag == "Disappear") {
+            if (castleSevenBlock.activeInHierarchy) {
+                print("BLOCK POIES");
+                castleSevenBlock.SetActive(false);
+            }
+        } else if (collision.tag == "Appear") {
+            if (!castleSevenBlock.activeInHierarchy) {
+                print("BLOCK PÄÄLLE");
+                castleSevenBlock.SetActive(true);
+            }
+            
         }
     }
 
