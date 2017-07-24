@@ -9,13 +9,17 @@ public class BossFight : MonoBehaviour {
     public float bulletSpeed;
     public float bulletDelay;
     public int bulletMode = 0; // 0 = I, 1 = X
-    public int colorMode = 0; // 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
+    public int currentColor = 0; // 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
+    public float destroyTime = 2.5f;
+    public GameObject dSpikes;
 
     private float timer;
+    private Vector2 dTarget;
+    private Vector2 spikeOrigPos;
+    private bool moveSpikes = false;
     private Animator anim;
     private Renderer rend;
 
-    private int currentColor;
     private Color yellow = new Color(0.898f, 0.785f, 0.102f);
     private Color green = new Color(0.145f, 0.785f, 0.102f);
     private Color red = new Color(0.784f, 0.102f, 0.149f);
@@ -24,6 +28,11 @@ public class BossFight : MonoBehaviour {
     private void Awake() {
         anim = GetComponent<Animator>();
         rend = GetComponent<Renderer>();
+    }
+
+    private void Start() {
+        spikeOrigPos = new Vector2(dSpikes.transform.position.x, dSpikes.transform.position.y);
+        dTarget = new Vector2(dSpikes.transform.position.x, dSpikes.transform.position.y + 0.25f);
     }
 
     private void Update() {
@@ -40,6 +49,19 @@ public class BossFight : MonoBehaviour {
             } else if (bulletMode == 1) {
                 anim.SetInteger("AnimState", 2);
                 XBullets();
+            } else if (bulletMode == 2) {
+                anim.SetInteger("AnimState", 3);
+                print("MOVESPIKES : " + moveSpikes);
+                if (moveSpikes) {
+                    if (dSpikes.transform.position.y < dTarget.y) {
+                        dSpikes.transform.position = Vector3.MoveTowards(dSpikes.transform.position, dTarget, 0.05f);
+                    } else {
+                        StartCoroutine(moveDownSpikeBack(1.25f));
+                    }
+                } else if (!moveSpikes) {
+                    dSpikes.transform.position = Vector3.MoveTowards(dSpikes.transform.position, spikeOrigPos, 0.05f);
+                }
+                
             }
 
             timer = 0f;
@@ -58,8 +80,27 @@ public class BossFight : MonoBehaviour {
         }
     }
 
+    public void moveDownSpike() {
+        moveSpikes = true;
+    }
+
+    public IEnumerator moveDownSpikeBack(float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+        moveSpikes = false;
+        yield return null;
+    }
+
     private void IBullets() {
+
+        bulletSpeed = Random.Range(5f, 6f);
+        bulletDelay = Random.Range(0.1f, 0.15f);
+
         for (int i = 0; i < bulletEmitter.Length; i++) {
+
+            if (bulletEmitter[i].transform.rotation.z != 0) {
+                bulletEmitter[i].transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+
             GameObject bulletInstanceOne = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;
             GameObject bulletInstanceTwo = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;
 
@@ -70,7 +111,7 @@ public class BossFight : MonoBehaviour {
 
             bulletOneRend.color = ChangeColor();
             bulletOneBody.velocity = bulletEmitter[i].transform.up * bulletSpeed;
-            Destroy(bulletInstanceOne, 2.0f);
+            Destroy(bulletInstanceOne, destroyTime);
 
             Rigidbody2D bulletTwoBody;
             SpriteRenderer bulletTwoRend;
@@ -79,11 +120,16 @@ public class BossFight : MonoBehaviour {
 
             bulletTwoRend.color = ChangeColor();
             bulletTwoBody.velocity = -bulletEmitter[i].transform.up * bulletSpeed;
-            Destroy(bulletInstanceTwo, 2.0f);
+            Destroy(bulletInstanceTwo, destroyTime);
         }  
     }
 
     private void XBullets() {
+
+        bulletSpeed = 4.5f;
+        bulletDelay = Random.Range(0.2f, 0.25f);
+        destroyTime = 2f;
+
         for (int i = 0; i < bulletEmitter.Length; i++) {
             GameObject bulletInstanceOne = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;
             GameObject bulletInstanceTwo = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;
@@ -97,7 +143,7 @@ public class BossFight : MonoBehaviour {
 
             bulletOneRend.color = ChangeColor();
             bulletOneBody.velocity = (bulletEmitter[i].transform.up + bulletEmitter[i].transform.right).normalized * bulletSpeed;
-            Destroy(bulletInstanceOne, 2.0f);
+            Destroy(bulletInstanceOne, destroyTime);
 
             Rigidbody2D bulletTwoBody;
             SpriteRenderer bulletTwoRend;
@@ -106,7 +152,7 @@ public class BossFight : MonoBehaviour {
 
             bulletTwoRend.color = ChangeColor();
             bulletTwoBody.velocity = (bulletEmitter[i].transform.up - bulletEmitter[i].transform.right).normalized * bulletSpeed;
-            Destroy(bulletInstanceTwo, 2.0f);
+            Destroy(bulletInstanceTwo, destroyTime);
 
             Rigidbody2D bulletThreeBody;
             SpriteRenderer bulletThreeRend;
@@ -115,7 +161,7 @@ public class BossFight : MonoBehaviour {
 
             bulletThreeRend.color = ChangeColor();
             bulletThreeBody.velocity = (-bulletEmitter[i].transform.up + bulletEmitter[i].transform.right).normalized * bulletSpeed;
-            Destroy(bulletInstanceThree, 2.0f);
+            Destroy(bulletInstanceThree, destroyTime);
 
             Rigidbody2D bulletFourBody;
             SpriteRenderer bulletFourRend;
@@ -124,7 +170,7 @@ public class BossFight : MonoBehaviour {
 
             bulletFourRend.color = ChangeColor();
             bulletFourBody.velocity = (-bulletEmitter[i].transform.up - bulletEmitter[i].transform.right).normalized * bulletSpeed;
-            Destroy(bulletInstanceFour, 2.0f);
+            Destroy(bulletInstanceFour, destroyTime);
         }
     }
 
