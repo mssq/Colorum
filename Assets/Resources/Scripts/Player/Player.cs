@@ -59,12 +59,10 @@ public class Player : PlayerManager {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.tag == "Disappear") {
             if (castleSevenBlock.activeInHierarchy) {
-                print("BLOCK POIES");
                 castleSevenBlock.SetActive(false);
             }
         } else if (collision.tag == "Appear") {
             if (!castleSevenBlock.activeInHierarchy) {
-                print("BLOCK PÄÄLLE");
                 castleSevenBlock.SetActive(true);
             }
             
