@@ -23,6 +23,8 @@ public class Player : PlayerManager {
     public float gravity = -20;
     public ParticleSystem deathParticle;
     public GameObject castleSevenBlock;
+    public GameObject uSpikes;
+    public GameObject boss;
 
 	protected override void Awake () {
         base.Awake();
@@ -60,10 +62,14 @@ public class Player : PlayerManager {
         if (collision.tag == "Disappear") {
             if (castleSevenBlock.activeInHierarchy) {
                 castleSevenBlock.SetActive(false);
+                uSpikes.SetActive(false);
+                boss.SetActive(false);
             }
         } else if (collision.tag == "Appear") {
             if (!castleSevenBlock.activeInHierarchy) {
                 castleSevenBlock.SetActive(true);
+                uSpikes.SetActive(true);
+                boss.SetActive(true);
             }
             
         }

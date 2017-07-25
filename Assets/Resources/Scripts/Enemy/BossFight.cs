@@ -6,19 +6,24 @@ public class BossFight : MonoBehaviour {
 
     public GameObject[] bulletEmitter;
     public GameObject bullet;
+    public GameObject player;
     public float bulletSpeed;
     public float bulletDelay;
-    public int bulletMode = 0; // 0 = I, 1 = X
+    public int bulletMode = 0; // 1 = I, 2 = X, 3 = SPIKEDOWN, 4 = SPIKEUP
     public int currentColor = 0; // 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
     public float destroyTime = 2.5f;
+    public float bossTimer;
+
     public GameObject dSpikes;
+    private Animator dSpikesAnim;
+    public GameObject uSpikes;
+    private Animator uSpikesAnim;
 
     private float timer;
-    private Vector2 dTarget;
-    private Vector2 spikeOrigPos;
-    private bool moveSpikes = false;
     private Animator anim;
     private Renderer rend;
+    private SpriteRenderer playerSpr;
+    private CameraShake camShake;
 
     private Color yellow = new Color(0.898f, 0.785f, 0.102f);
     private Color green = new Color(0.145f, 0.785f, 0.102f);
@@ -28,15 +33,19 @@ public class BossFight : MonoBehaviour {
     private void Awake() {
         anim = GetComponent<Animator>();
         rend = GetComponent<Renderer>();
-    }
-
-    private void Start() {
-        spikeOrigPos = new Vector2(dSpikes.transform.position.x, dSpikes.transform.position.y);
-        dTarget = new Vector2(dSpikes.transform.position.x, dSpikes.transform.position.y + 0.25f);
+        dSpikesAnim = dSpikes.GetComponent<Animator>();
+        uSpikesAnim = uSpikes.GetComponent<Animator>();
+        playerSpr = player.GetComponent<SpriteRenderer>();
+        camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
     }
 
     private void Update() {
         timer += Time.deltaTime;
+        bossTimer += Time.deltaTime;
+
+        if (bossTimer > 2f && bossTimer < 2.1f) {
+            bulletMode = 3;
+        }
 
         if (timer > bulletDelay) {
 
@@ -44,28 +53,33 @@ public class BossFight : MonoBehaviour {
             rend.material.SetColor("_Colorout", ChangeColor());
 
             if (bulletMode == 0) {
+                anim.SetInteger("AnimState", 0);
+            } else if (bulletMode == 1) {
                 anim.SetInteger("AnimState", 1);
                 IBullets();
-            } else if (bulletMode == 1) {
+            } else if (bulletMode == 2) {
                 anim.SetInteger("AnimState", 2);
                 XBullets();
-            } else if (bulletMode == 2) {
-                anim.SetInteger("AnimState", 3);
-                print("MOVESPIKES : " + moveSpikes);
-                if (moveSpikes) {
-                    if (dSpikes.transform.position.y < dTarget.y) {
-                        dSpikes.transform.position = Vector3.MoveTowards(dSpikes.transform.position, dTarget, 0.05f);
-                    } else {
-                        StartCoroutine(moveDownSpikeBack(1.25f));
-                    }
-                } else if (!moveSpikes) {
-                    dSpikes.transform.position = Vector3.MoveTowards(dSpikes.transform.position, spikeOrigPos, 0.05f);
-                }
-                
+            } else if (bulletMode == 3) {
+                anim.SetInteger("AnimState", 3);  
+            } else if (bulletMode == 4) {
+                anim.SetInteger("AnimState", 4);
             }
 
             timer = 0f;
         }
+
+        if (!playerSpr.enabled) {
+            Reset();
+        }
+    }
+
+    private void Reset() {
+        print("RESET KUTSUTTU!!");
+        bulletMode = 0;
+        bossTimer = 0;
+        dSpikesAnim.SetInteger("spikeMode", 0);
+        uSpikesAnim.SetInteger("spikeMode", 0);
     }
 
     private Color ChangeColor() {
@@ -80,13 +94,29 @@ public class BossFight : MonoBehaviour {
         }
     }
 
+    public void shakeCamera() {
+        camShake.Shake(0.1f, 0.3f);
+    }
+
+    public void moveUpSpike() {
+        uSpikesAnim.SetInteger("spikeMode", 1);
+        StartCoroutine(moveUpSpikeBack(1.25f));
+    }
+
+    public IEnumerator moveUpSpikeBack(float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+        uSpikesAnim.SetInteger("spikeMode", 2);
+        yield return null;
+    }
+
     public void moveDownSpike() {
-        moveSpikes = true;
+        dSpikesAnim.SetInteger("spikeMode", 2);
+        StartCoroutine(moveDownSpikeBack(1.25f));
     }
 
     public IEnumerator moveDownSpikeBack(float waitTime) {
         yield return new WaitForSeconds(waitTime);
-        moveSpikes = false;
+        dSpikesAnim.SetInteger("spikeMode", 1);
         yield return null;
     }
 
