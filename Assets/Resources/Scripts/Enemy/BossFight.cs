@@ -43,7 +43,19 @@ public class BossFight : MonoBehaviour {
         timer += Time.deltaTime;
         bossTimer += Time.deltaTime;
 
-        if (bossTimer > 2f && bossTimer < 2.1f) {
+        if (bossTimer > 33f) {
+            bulletMode = 1;
+        } else if (bossTimer > 25f) {
+            bulletMode = 2;
+        } else if (bossTimer > 22f) {
+            bulletMode = 4;
+        } else if (bossTimer > 20f) {
+            bulletMode = 3;
+        } else if (bossTimer > 11f) {
+            bulletMode = 2;
+        } else if (bossTimer > 5f) {
+            bulletMode = 1;
+        } else if (bossTimer > 2f) {
             bulletMode = 3;
         }
 
@@ -75,7 +87,6 @@ public class BossFight : MonoBehaviour {
     }
 
     private void Reset() {
-        print("RESET KUTSUTTU!!");
         bulletMode = 0;
         bossTimer = 0;
         dSpikesAnim.SetInteger("spikeMode", 0);
@@ -124,6 +135,7 @@ public class BossFight : MonoBehaviour {
 
         bulletSpeed = Random.Range(5f, 6f);
         bulletDelay = Random.Range(0.1f, 0.15f);
+        destroyTime = 2.2f;
 
         for (int i = 0; i < bulletEmitter.Length; i++) {
 
@@ -157,8 +169,8 @@ public class BossFight : MonoBehaviour {
     private void XBullets() {
 
         bulletSpeed = 4.5f;
-        bulletDelay = Random.Range(0.2f, 0.25f);
-        destroyTime = 2f;
+        bulletDelay = Random.Range(0.2f, 0.5f);
+        destroyTime = 2.5f;
 
         for (int i = 0; i < bulletEmitter.Length; i++) {
             GameObject bulletInstanceOne = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;
