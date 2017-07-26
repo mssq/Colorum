@@ -53,7 +53,7 @@ public class PlayerOneInput : PlayerManager {
         }
 
         if (rewPlayer.GetButtonDown("Restart")) {
-            StartCoroutine(playerScript.Restart(0.2f));
+            StartCoroutine(playerScript.Restart(0.3f));
         }
     }
 

@@ -13,6 +13,7 @@ public class BossFight : MonoBehaviour {
     public int currentColor = 0; // 0 = RED, 1 = BLUE, 2 = GREEN, 3 = YELLOW
     public float destroyTime = 2.5f;
     public float bossTimer;
+    public GameObject door;
 
     public GameObject dSpikes;
     private Animator dSpikesAnim;
@@ -43,7 +44,9 @@ public class BossFight : MonoBehaviour {
         timer += Time.deltaTime;
         bossTimer += Time.deltaTime;
 
-        if (bossTimer > 33f) {
+        if (bossTimer > 40f) {
+            bulletMode = 5;
+        } else if (bossTimer > 33f) {
             bulletMode = 1;
         } else if (bossTimer > 25f) {
             bulletMode = 2;
@@ -65,7 +68,7 @@ public class BossFight : MonoBehaviour {
             rend.material.SetColor("_Colorout", ChangeColor());
 
             if (bulletMode == 0) {
-                anim.SetInteger("AnimState", 0);
+                anim.SetInteger("AnimState", 6);
             } else if (bulletMode == 1) {
                 anim.SetInteger("AnimState", 1);
                 IBullets();
@@ -76,6 +79,8 @@ public class BossFight : MonoBehaviour {
                 anim.SetInteger("AnimState", 3);  
             } else if (bulletMode == 4) {
                 anim.SetInteger("AnimState", 4);
+            } else if (bulletMode == 5) {
+                 anim.SetInteger("AnimState", 5);
             }
 
             timer = 0f;
@@ -84,6 +89,10 @@ public class BossFight : MonoBehaviour {
         if (!playerSpr.enabled) {
             Reset();
         }
+    }
+
+    private void openDoor() {
+        door.SetActive(false);
     }
 
     private void Reset() {

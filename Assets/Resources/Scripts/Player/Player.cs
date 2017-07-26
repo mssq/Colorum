@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 [RequireComponent (typeof (Controller2D))]
 public class Player : PlayerManager {
@@ -72,6 +72,8 @@ public class Player : PlayerManager {
                 boss.SetActive(true);
             }
             
+        } else if (collision.tag == "End") {
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
@@ -84,7 +86,6 @@ public class Player : PlayerManager {
                 StartCoroutine(Restart(1f));
 
                 playerInput.enabled = false;
-                sprite.enabled = false;
                 coll.enabled = false;
             }
         } else if (collider.tag == "Checkpoint") {
@@ -144,6 +145,8 @@ public class Player : PlayerManager {
     }
 
     public IEnumerator Restart(float waitTime) {
+
+        sprite.enabled = false;
 
         yield return new WaitForSeconds(waitTime);
 
