@@ -20,6 +20,11 @@ public class BossFight : MonoBehaviour {
     public GameObject uSpikes;
     private Animator uSpikesAnim;
 
+    private AudioSource[] sounds;
+    private AudioSource roarSound;
+    private AudioSource hitSound;
+    private AudioSource shootSound;
+
     private float timer;
     private Animator anim;
     private Renderer rend;
@@ -38,6 +43,10 @@ public class BossFight : MonoBehaviour {
         uSpikesAnim = uSpikes.GetComponent<Animator>();
         playerSpr = player.GetComponent<SpriteRenderer>();
         camShake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        sounds = GetComponents<AudioSource>();
+        roarSound = sounds[0];
+        hitSound = sounds[1];
+        shootSound = sounds[2];
     }
 
     private void Update() {
@@ -58,7 +67,7 @@ public class BossFight : MonoBehaviour {
             bulletMode = 2;
         } else if (bossTimer > 5f) {
             bulletMode = 1;
-        } else if (bossTimer > 2f) {
+        } else if (bossTimer > 1f) {
             bulletMode = 3;
         }
 
@@ -93,6 +102,19 @@ public class BossFight : MonoBehaviour {
 
     private void openDoor() {
         door.SetActive(false);
+    }
+
+    private void playSound(int sound) {
+        if (sound == 0) {
+            if (!roarSound.isPlaying)
+                roarSound.Play();
+        } else if (sound == 1) {
+            if (!hitSound.isPlaying)
+                hitSound.Play();
+        } else if (sound == 2) {
+            if (!shootSound.isPlaying)
+                shootSound.Play();
+        }
     }
 
     private void Reset() {
@@ -145,6 +167,7 @@ public class BossFight : MonoBehaviour {
         bulletSpeed = Random.Range(5f, 6f);
         bulletDelay = Random.Range(0.1f, 0.15f);
         destroyTime = 2.2f;
+        playSound(2);
 
         for (int i = 0; i < bulletEmitter.Length; i++) {
 
@@ -180,6 +203,7 @@ public class BossFight : MonoBehaviour {
         bulletSpeed = 4.5f;
         bulletDelay = Random.Range(0.2f, 0.5f);
         destroyTime = 2.5f;
+        playSound(2);
 
         for (int i = 0; i < bulletEmitter.Length; i++) {
             GameObject bulletInstanceOne = Instantiate(bullet, bulletEmitter[i].transform.position, bulletEmitter[i].transform.rotation) as GameObject;

@@ -9,6 +9,7 @@ public class CameraShake : MonoBehaviour {
     private float offsetY = 0f;
     private Vector3 camOrigPos;
     private bool toOrigPos = false;
+    private bool camShakeOn = false;
 
     void Awake() {
         if (mainCam == null)
@@ -24,11 +25,15 @@ public class CameraShake : MonoBehaviour {
 
     public void Shake(float amount, float length) {
 
-        toOrigPos = true;
-        camOrigPos = mainCam.transform.position;
-        shakeAmount = amount;
-        InvokeRepeating("BeginShake", 0, 0.01f);
-        Invoke("StopShake", length);
+        if (!getCamShakeOn()) {
+            setCamShakeOn(true);
+            toOrigPos = true;
+            camOrigPos = mainCam.transform.position;
+            shakeAmount = amount;
+            InvokeRepeating("BeginShake", 0, 0.01f);
+            Invoke("StopShake", length);
+        }
+        
     }
 
     void BeginShake() {
@@ -60,11 +65,20 @@ public class CameraShake : MonoBehaviour {
 
     void StopShake() {
         CancelInvoke("BeginShake");
-        Invoke("EnableScripts", 0.1f);
+        Invoke("EnableScripts", 0.25f);
     }
 
     void EnableScripts() {
         toOrigPos = false;
+        setCamShakeOn(false);
+    }
+
+    public void setCamShakeOn(bool status) {
+        camShakeOn = status;
+    }
+
+    public bool getCamShakeOn() {
+        return camShakeOn;
     }
 
 }

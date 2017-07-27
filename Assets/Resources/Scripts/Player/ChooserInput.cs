@@ -13,6 +13,10 @@ public class ChooserInput : PlayerManager {
     private SpriteRenderer chooserSprite;
     private SpriteRenderer rArrowSprite;
     private SpriteRenderer lArrowSprite;
+    private AudioSource[] sounds;
+    private AudioSource movePlusSound;
+    private AudioSource moveMinusSound;
+    private AudioSource moveSound;
     public GameObject rArrow;
     public GameObject lArrow;
 
@@ -31,6 +35,10 @@ public class ChooserInput : PlayerManager {
         rArrowSprite = rArrow.GetComponent<SpriteRenderer>();
         lArrowSprite = lArrow.GetComponent<SpriteRenderer>();
         animJoystick = arcadeJoystick.GetComponent<Animator>();
+        sounds = GetComponents<AudioSource>();
+        movePlusSound = sounds[0];
+        moveMinusSound = sounds[1];
+        moveSound = sounds[2];
     }
 
     void Start() {
@@ -53,6 +61,7 @@ public class ChooserInput : PlayerManager {
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x + 1.385f, lArrow.transform.position.y);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x + 1.385f, rArrow.transform.position.y);
                 animJoystick.SetInteger("Position", 1);
+                playSound(2);
             } else if (directionalInput.x < -0.5 && positionX == 1) {
                 // Move left
                 positionX--;
@@ -60,18 +69,21 @@ public class ChooserInput : PlayerManager {
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x - 1.385f, lArrow.transform.position.y);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x - 1.385f, rArrow.transform.position.y);
                 animJoystick.SetInteger("Position", 2);
+                playSound(2);
             } else if (directionalInput.y > 0.5 && positionY == 1) {
                 // Move up
                 positionY--;
                 transform.position = new Vector2(transform.position.x, transform.position.y + 2.13f);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y + 2.13f);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y + 2.13f);
+                playSound(2);
             } else if (directionalInput.y < -0.5 && positionY == 0) {
                 // Move down
                 positionY++;
                 transform.position = new Vector2(transform.position.x, transform.position.y - 2.13f);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y - 2.13f);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y - 2.13f);
+                playSound(2);
             } else if (directionalInput.x < 0.2 && directionalInput.x > - 0.2) {
                 animJoystick.SetInteger("Position", 0);
             }
@@ -81,6 +93,19 @@ public class ChooserInput : PlayerManager {
             chooserSprite.enabled = true;
             lArrowSprite.enabled = false;
             rArrowSprite.enabled = false;
+        }
+    }
+
+    private void playSound(int sound) {
+        if (sound == 0) {
+            if (!moveMinusSound.isPlaying)
+                moveMinusSound.Play();
+        } else if (sound == 1) {
+            if (!movePlusSound.isPlaying)
+                movePlusSound.Play();
+        } else if (sound == 2) {
+            if (!moveSound.isPlaying)
+                moveSound.Play();
         }
     }
 
@@ -104,11 +129,13 @@ public class ChooserInput : PlayerManager {
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
                         playerScript.SetGravity(5.5f);
                         gravityState++;
+                        playSound(1);
                         break;
                     case 1:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconHigh");
                         playerScript.SetGravity(8);
                         gravityState++;
+                        playSound(1);
                         break;
                     default:
                         break;
@@ -123,11 +150,13 @@ public class ChooserInput : PlayerManager {
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconLow");
                         playerScript.SetGravity(3);
                         gravityState--;
+                        playSound(0);
                         break;
                     case 2:
                         gravityImage.sprite = Resources.Load<Sprite>("Sprites/GravityIconMed");
                         playerScript.SetGravity(5.5f);
                         gravityState--;
+                        playSound(0);
                         break;
                     default:
                         break;
@@ -145,16 +174,19 @@ public class ChooserInput : PlayerManager {
                         sprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState++;
+                        playSound(1);
                         break;
                     case 1:
                         sprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState++;
+                        playSound(1);
                         break;
                     case 2:
                         sprite.color = yellow;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorYellow");
                         colorState++;
+                        playSound(1);
                         break;
                     default:
                         break;
@@ -169,16 +201,19 @@ public class ChooserInput : PlayerManager {
                         sprite.color = red;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorRed");
                         colorState--;
+                        playSound(0);
                         break;
                     case 2:
                         sprite.color = blue;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorBlue");
                         colorState--;
+                        playSound(0);
                         break;
                     case 3:
                         sprite.color = green;
                         colorImage.sprite = Resources.Load<Sprite>("Sprites/PlayerColorGreen");
                         colorState--;
+                        playSound(0);
                         break;
                     default:
                         break;

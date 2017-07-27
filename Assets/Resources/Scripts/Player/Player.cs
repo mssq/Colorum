@@ -10,6 +10,15 @@ public class Player : PlayerManager {
     private LoadInformation loadInf;
     private SaveInformation saveInf;
 
+    private AudioSource[] musics;
+    private AudioSource bgMusic;
+    private AudioSource bossMusic;
+
+    private AudioSource[] sounds;
+    private AudioSource jmpSound;
+    private AudioSource deathSound;
+    private AudioSource saveSound;
+
     private Vector3 velocity;
     private float velocityXSmoothing;
 
@@ -33,6 +42,13 @@ public class Player : PlayerManager {
         loadInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<LoadInformation>();
         saveInf = GameObject.FindGameObjectWithTag("Logic").GetComponent<SaveInformation>();
         checkpoints = GameObject.FindGameObjectsWithTag("Checkpoint");
+        sounds = GetComponents<AudioSource>();
+        jmpSound = sounds[0];
+        deathSound = sounds[1];
+        saveSound = sounds[2];
+        musics = gameLogic.GetComponents<AudioSource>();
+        bgMusic = musics[0];
+        bossMusic = musics[1];
     }
 
 
@@ -70,6 +86,10 @@ public class Player : PlayerManager {
                 castleSevenBlock.SetActive(true);
                 uSpikes.SetActive(true);
                 boss.SetActive(true);
+                if (bgMusic.isPlaying) 
+                    bgMusic.Stop();
+                if (!bossMusic.isPlaying)
+                    bossMusic.Play();
             }
             
         } else if (collision.tag == "End") {
@@ -81,10 +101,18 @@ public class Player : PlayerManager {
         if (collider.tag == "Threat") {
             if (collider.GetComponent<SpriteRenderer>().color != sprite.color) {
                 camShake.Shake(0.08f, 0.25f);
+
                 deathParticle.transform.position = this.transform.position;
                 deathParticle.Play();
-                StartCoroutine(Restart(1f));
 
+                if (!deathSound.isPlaying)
+                    deathSound.Play();
+                if (bossMusic.isPlaying)
+                    bossMusic.Stop();
+                if (!bgMusic.isPlaying)
+                    bgMusic.PlayDelayed(0.75f);
+
+                StartCoroutine(Restart(1f));
                 playerInput.enabled = false;
                 coll.enabled = false;
             }
@@ -96,6 +124,8 @@ public class Player : PlayerManager {
                 spawnLocation.transform.position.x != trans.position.x) {
 
                 getCheckpoints(true);
+                if (!saveSound.isPlaying)
+                    saveSound.Play();
 
                 // Move spawnLocation to position of this savepoint
                 spawnLocation.transform.position = new Vector3(trans.position.x, trans.position.y - 0.3f, trans.position.z);
@@ -130,6 +160,8 @@ public class Player : PlayerManager {
     public void onGravityInput() {
         if (controller.collisions.below || controller.collisions.above) {
             gravity *= -1;
+            if (!jmpSound.isPlaying)
+                jmpSound.Play();
         }
     }
 

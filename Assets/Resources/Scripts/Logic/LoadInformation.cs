@@ -10,6 +10,9 @@ public class LoadInformation : PlayerManager {
 
         Vector3 temp = new Vector3(PlayerPrefs.GetFloat("PLAYERPOSX"), PlayerPrefs.GetFloat("PLAYERPOSY"),
             PlayerPrefs.GetFloat("PLAYERPOSZ"));
+        if (temp.x == 0 && temp.y == 0) {
+            temp = new Vector3(-12f, 1f, 0f);
+        }
         spawnLocation.position = temp;
 
         int colorTemp = PlayerPrefs.GetInt("COLOR");

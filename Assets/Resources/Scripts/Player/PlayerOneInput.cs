@@ -52,9 +52,9 @@ public class PlayerOneInput : PlayerManager {
             }
         }
 
-        if (rewPlayer.GetButtonDown("Restart")) {
+        /*if (rewPlayer.GetButtonDown("Restart")) {
             StartCoroutine(playerScript.Restart(0.3f));
-        }
+        }*/
     }
 
     public float getAxisHorizontal() {
