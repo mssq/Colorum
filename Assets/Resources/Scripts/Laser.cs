@@ -8,7 +8,6 @@ public class Laser : PlayerManager {
 
     protected override void Awake() {
         base.Awake();
-
         laserSprite = this.gameObject.GetComponent<SpriteRenderer>();
     }
 
