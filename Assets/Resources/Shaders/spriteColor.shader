@@ -60,6 +60,8 @@ Shader "Custom/spriteColor" {
             v2f vert(appdata_t IN)
             {
                 v2f OUT;
+				UNITY_INITIALIZE_OUTPUT(v2f, OUT);
+
                 OUT.vertex = UnityObjectToClipPos(IN.vertex);
                 OUT.texcoord = IN.texcoord;      
                 //This didn't work, so commenting it out, added it in fragment shader

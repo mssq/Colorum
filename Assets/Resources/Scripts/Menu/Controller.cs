@@ -5,9 +5,6 @@ using Rewired;
 
 public class Controller : MonoBehaviour {
 
-    private float positionX;
-    private float positionY;
-
     private int buttonState = 0; // 0 = start, 1 = exit
 
     private Rewired.Player rewPlayer;
@@ -17,8 +14,6 @@ public class Controller : MonoBehaviour {
     public GameObject player;
 
     private void Awake() {
-        positionX = this.transform.position.x;
-        positionY = this.transform.position.y;
         rewPlayer = ReInput.players.GetPlayer(0);
         manager = GameObject.FindGameObjectWithTag("Manager").GetComponent<ButtonManager>();
         playerSpr = player.GetComponent<SpriteRenderer>();
@@ -31,13 +26,13 @@ public class Controller : MonoBehaviour {
 
     private void Update() {
         Vector2 directionalInput = new Vector2(rewPlayer.GetAxis("Move Horizontal"), rewPlayer.GetAxis("Move Vertical"));
-        
-        if (directionalInput.y > 0.5 && buttonState == 1) {
+
+        if (directionalInput.y > 0.5 && buttonState == 1 || rewPlayer.GetButton("Move Up") && buttonState == 1) {
             // Move down
             buttonState--;
             transform.position = new Vector3(transform.position.x - 0.15f, transform.position.y + 0.53f, transform.position.z);
             playerSpr.flipX = false;
-        } else if (directionalInput.y < -0.5 && buttonState == 0) {
+        } else if (directionalInput.y < -0.5 && buttonState == 0 || rewPlayer.GetButton("Move Down") && buttonState == 0) {
             // Move up
             buttonState++;
             transform.position = new Vector3(transform.position.x + 0.15f, transform.position.y - 0.53f, transform.position.z);

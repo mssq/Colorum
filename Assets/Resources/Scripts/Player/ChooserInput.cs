@@ -7,6 +7,7 @@ public class ChooserInput : PlayerManager {
     private int positionX = 0;
     private int positionY = 0;
     private bool resetJoystick = false;
+    private bool resetKeyboard = false;
     private int gravityState = 1; // 0 = low, 1 = med, 2 = high
     private int colorState = 0; // 0 = red, 1 = blue, 2 = green, 3 = yellow
 
@@ -50,11 +51,16 @@ public class ChooserInput : PlayerManager {
 
         Vector2 directionalInput = new Vector2(rewPlayer.GetAxis("Move Horizontal P2"), rewPlayer.GetAxis("Move Vertical P2"));
 
+        if (rewPlayer.GetButtonUp("Interact Right") || rewPlayer.GetButtonUp("Interact Left")) {
+            resetKeyboard = false;
+            animJoystick.SetInteger("Position", 0);
+        }
+
         if (rewPlayer.GetButton("Pull Lever")) {
             chooserSprite.enabled = false;
             interact(directionalInput);
         } else {
-            if (directionalInput.x > 0.5 && positionX == 0) {
+            if (directionalInput.x > 0.25 && positionX == 0 || rewPlayer.GetButton("Move Right") && positionX == 0) {
                 // Move right
                 positionX++;
                 transform.position = new Vector2(transform.position.x + 1.358f, transform.position.y);
@@ -62,7 +68,7 @@ public class ChooserInput : PlayerManager {
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x + 1.385f, rArrow.transform.position.y);
                 animJoystick.SetInteger("Position", 1);
                 playSound(2);
-            } else if (directionalInput.x < -0.5 && positionX == 1) {
+            } else if (directionalInput.x < -0.25 && positionX == 1 || rewPlayer.GetButton("Move Left") && positionX == 1) {
                 // Move left
                 positionX--;
                 transform.position = new Vector2(transform.position.x - 1.358f, transform.position.y);
@@ -70,14 +76,14 @@ public class ChooserInput : PlayerManager {
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x - 1.385f, rArrow.transform.position.y);
                 animJoystick.SetInteger("Position", 2);
                 playSound(2);
-            } else if (directionalInput.y > 0.5 && positionY == 1) {
+            } else if (directionalInput.y > 0.25 && positionY == 1 || rewPlayer.GetButton("Move Up") && positionY == 1) {
                 // Move up
                 positionY--;
                 transform.position = new Vector2(transform.position.x, transform.position.y + 2.13f);
                 lArrow.transform.position = new Vector2(lArrow.transform.position.x, lArrow.transform.position.y + 2.13f);
                 rArrow.transform.position = new Vector2(rArrow.transform.position.x, rArrow.transform.position.y + 2.13f);
                 playSound(2);
-            } else if (directionalInput.y < -0.5 && positionY == 0) {
+            } else if (directionalInput.y < -0.25 && positionY == 0 || rewPlayer.GetButton("Move Down") && positionY == 0) {
                 // Move down
                 positionY++;
                 transform.position = new Vector2(transform.position.x, transform.position.y - 2.13f);
@@ -114,14 +120,14 @@ public class ChooserInput : PlayerManager {
 
         showArrow();
 
-        if (input.x < 0.2 && input.x > -0.2) {
+        if (input.x < 0.25 && input.x > -0.25) {
             resetJoystick = false;
             animJoystick.SetInteger("Position", 0);
         }
 
         if (positionX == 0 && positionY == 0) {
             // Top left
-            if (input.x > 0.5 && !resetJoystick) {
+            if (input.x > 0.25 && !resetJoystick || rewPlayer.GetButton("Interact Right") && !resetKeyboard) {
                 animJoystick.SetInteger("Position", 1);
 
                 switch (gravityState) {
@@ -141,8 +147,9 @@ public class ChooserInput : PlayerManager {
                         break;
                 }
                 resetJoystick = true;
+                resetKeyboard = true;
 
-            } else if (input.x < -0.5 && !resetJoystick) {
+            } else if (input.x < -0.25 && !resetJoystick || rewPlayer.GetButton("Interact Left") && !resetKeyboard) {
                 animJoystick.SetInteger("Position", 2);
 
                 switch (gravityState) {
@@ -162,11 +169,12 @@ public class ChooserInput : PlayerManager {
                         break;
                 }
                 resetJoystick = true;
+                resetKeyboard = true;
             }
 
         } else if (positionX == 1 && positionY == 0) {
             // Top right
-            if (input.x > 0.5 && !resetJoystick) {
+            if (input.x > 0.25 && !resetJoystick || rewPlayer.GetButton("Interact Right") && !resetKeyboard) {
                 animJoystick.SetInteger("Position", 1);
 
                 switch (colorState) {
@@ -192,8 +200,9 @@ public class ChooserInput : PlayerManager {
                         break;
                 }
                 resetJoystick = true;
+                resetKeyboard = true;
 
-            } else if (input.x < -0.5 && !resetJoystick) {
+            } else if (input.x < -0.25 && !resetJoystick || rewPlayer.GetButton("Interact Left") && !resetKeyboard) {
                 animJoystick.SetInteger("Position", 2);
 
                 switch (colorState) {
@@ -219,6 +228,7 @@ public class ChooserInput : PlayerManager {
                         break;
                 }
                 resetJoystick = true;
+                resetKeyboard = true;
             }
 
         } else if (positionX == 0 && positionY == 1) {

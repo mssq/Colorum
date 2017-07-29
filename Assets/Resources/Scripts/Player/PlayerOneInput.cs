@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using Rewired;
 
 [RequireComponent(typeof(Player))]
@@ -50,6 +48,10 @@ public class PlayerOneInput : PlayerManager {
                 sprite.flipY = !sprite.flipY;
                 coll.offset = new Vector2(coll.offset.x, coll.offset.y * -1);
             }
+        }
+
+        if (rewPlayer.GetButtonDown("Start")) {
+            SceneManager.LoadScene("MainMenu");
         }
 
         /*if (rewPlayer.GetButtonDown("Restart")) {

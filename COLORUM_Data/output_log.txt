@@ -21,45 +21,69 @@ Platform assembly: C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data
 Loading C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\Rewired_Windows_Lib.dll into Unity Child Domain
 Platform assembly: C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll (this message is harmless)
 Loading C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll into Unity Child Domain
-- Completed reload, in  0.150 seconds
+- Completed reload, in  0.046 seconds
 Platform assembly: C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\System.dll (this message is harmless)
 desktop: 2560x1440 144Hz; virtual: 4480x1440 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.910081 ms
-Non platform assembly: data-1222BDA0 (this message is harmless)
-Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-1222BDA0.dll
-Non platform assembly: data-12361050 (this message is harmless)
-Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-12361050.dll
-Non platform assembly: data-149CE020 (this message is harmless)
-Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-149CE020.dll
+UnloadTime: 0.834559 ms
+Non platform assembly: data-12110020 (this message is harmless)
+Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-12110020.dll
+Non platform assembly: data-1205DBD8 (this message is harmless)
+Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-1205DBD8.dll
+Non platform assembly: data-13B64020 (this message is harmless)
+Fallback handler could not load library C:/Users/Miika/Documents/GitHub/SummerPlatformer/COLORUM_Data/Mono/data-13B64020.dll
 Rewired: Searching for compatible XInput library...
 Rewired: Found Xinput1_4.dll.
 Platform assembly: C:\Users\Miika\Documents\GitHub\SummerPlatformer\COLORUM_Data\Managed\System.Xml.dll (this message is harmless)
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 16.679710 ms
-Non platform assembly: data-172E5A60 (this message is harmless)
-Non platform assembly: data-1715F558 (this message is harmless)
-Non platform assembly: data-1829E020 (this message is harmless)
+UnloadTime: 13.850876 ms
+Non platform assembly: data-17C25F68 (this message is harmless)
+Non platform assembly: data-121D8070 (this message is harmless)
+Non platform assembly: data-14014020 (this message is harmless)
 Rewired: Searching for compatible XInput library...
 Rewired: Found Xinput1_4.dll.
 
-Unloading 27 unused Assets to reduce memory usage. Loaded Objects now: 2257.
-Total: 7.602957 ms (FindLiveObjects: 0.082176 ms CreateObjectMapping: 0.035840 ms MarkObjects: 7.289613 ms  DeleteObjects: 0.195072 ms)
+Unloading 27 unused Assets to reduce memory usage. Loaded Objects now: 2357.
+Total: 8.180221 ms (FindLiveObjects: 0.076287 ms CreateObjectMapping: 0.042239 ms MarkObjects: 7.848445 ms  DeleteObjects: 0.212735 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.478852 ms
+UnloadTime: 10.271485 ms
+Non platform assembly: data-17C7E228 (this message is harmless)
+Non platform assembly: data-121CA050 (this message is harmless)
+Non platform assembly: data-018F1020 (this message is harmless)
+Rewired: Searching for compatible XInput library...
+Rewired: Found Xinput1_4.dll.
 
-Unloading 149 unused Assets to reduce memory usage. Loaded Objects now: 663.
-Total: 9.384463 ms (FindLiveObjects: 0.023040 ms CreateObjectMapping: 0.024320 ms MarkObjects: 7.265037 ms  DeleteObjects: 2.072067 ms)
+Unloading 149 unused Assets to reduce memory usage. Loaded Objects now: 660.
+Total: 10.583293 ms (FindLiveObjects: 0.027391 ms CreateObjectMapping: 0.028415 ms MarkObjects: 7.856637 ms  DeleteObjects: 2.670335 ms)
 
-[WARNING] Rewired: The Action "Move Horizontal" does not exist. You can create Actions in the editor.
-[WARNING] Rewired: The Action "Move Vertical" does not exist. You can create Actions in the editor.
-[WARNING] Rewired: The Action "Action" does not exist. You can create Actions in the editor.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 7.858173 ms
+Non platform assembly: data-17C7F468 (this message is harmless)
+Non platform assembly: data-121CD858 (this message is harmless)
+Non platform assembly: data-018F1020 (this message is harmless)
+Rewired: Searching for compatible XInput library...
+Rewired: Found Xinput1_4.dll.
+
+Unloading 25 unused Assets to reduce memory usage. Loaded Objects now: 2357.
+Total: 8.755709 ms (FindLiveObjects: 0.083199 ms CreateObjectMapping: 0.041471 ms MarkObjects: 8.514045 ms  DeleteObjects: 0.116735 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 8.664828 ms
+Non platform assembly: data-17C7F468 (this message is harmless)
+Non platform assembly: data-121CA050 (this message is harmless)
+Non platform assembly: data-018F8020 (this message is harmless)
+Rewired: Searching for compatible XInput library...
+Rewired: Found Xinput1_4.dll.
+
+Unloading 142 unused Assets to reduce memory usage. Loaded Objects now: 660.
+Total: 11.090174 ms (FindLiveObjects: 0.035327 ms CreateObjectMapping: 0.042239 ms MarkObjects: 8.288253 ms  DeleteObjects: 2.724095 ms)
+
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 3660 -> priority: 1 
-  Thread -> id: 2c94 -> priority: 1 
-  Thread -> id: 2838 -> priority: 1 
-  Thread -> id: 3d24 -> priority: 1 
+  Thread -> id: 16c0 -> priority: 1 
+  Thread -> id: 1298 -> priority: 1 
+  Thread -> id: 3abc -> priority: 1 
+  Thread -> id: 3938 -> priority: 1 
