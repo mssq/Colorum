@@ -50,7 +50,7 @@ public class PlayerOneInput : PlayerManager {
             }
         }
 
-        if (rewPlayer.GetButtonDown("Start")) {
+        if (rewPlayer.GetButton("Start")) {
             SceneManager.LoadScene("MainMenu");
         }
 
