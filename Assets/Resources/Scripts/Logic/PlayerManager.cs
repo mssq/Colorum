@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour {
     protected ChooserInput chooserInput;
     protected PlatformController platformController;
     protected GameObject gameLogic;
+    protected GameObject mainCamera;
 
     protected Color yellow = new Color(0.898f, 0.785f, 0.102f);
     protected Color green = new Color(0.145f, 0.785f, 0.102f);
@@ -38,5 +39,6 @@ public class PlayerManager : MonoBehaviour {
         chooserInput = GameObject.FindGameObjectWithTag("Player Two").GetComponent<ChooserInput>();
         platformController = GameObject.FindGameObjectWithTag("Moving Platform").GetComponent<PlatformController>();
         gameLogic = GameObject.FindGameObjectWithTag("Logic");
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 }

@@ -34,6 +34,7 @@ public class Player : PlayerManager {
     public GameObject castleSevenBlock;
     public GameObject uSpikes;
     public GameObject boss;
+    public GameObject end;
 
 	protected override void Awake () {
         base.Awake();
@@ -93,7 +94,10 @@ public class Player : PlayerManager {
             }
             
         } else if (collision.tag == "End") {
-            SceneManager.LoadScene("MainMenu");
+            playerInput.enabled = false;
+            sprite.enabled = false;
+
+            StartCoroutine(BackToMenu(3f));
         }
     }
 
@@ -145,6 +149,12 @@ public class Player : PlayerManager {
             Animator cpAnim = checkpoint.GetComponent<Animator>();
             cpAnim.SetBool("Activated", activated);
         }
+    }
+
+    private IEnumerator BackToMenu(float waitTime) {
+        yield return new WaitForSeconds(waitTime);
+        SceneManager.LoadScene("MainMenu");
+        yield return null;
     }
 
     private IEnumerator WaitForAnimation(Animation animation) {
